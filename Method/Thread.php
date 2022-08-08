@@ -110,7 +110,7 @@ final class Thread extends MethodQueryCards
         }
     }
     
-    public function getTitle()
+    public function getMethodTitle() : string
     {
         return $this->getThread()->getTitle();
     }

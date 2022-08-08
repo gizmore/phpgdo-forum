@@ -62,7 +62,7 @@ final class EditThread extends MethodForm
             GDT_Submit::make(),
             GDT_Submit::make('delete'),
         ]);
-        $form->withGDOValuesFrom($gdo);
+//         $form->withGDOValuesFrom($gdo);
     }
     
     public function formValidated(GDT_Form $form)

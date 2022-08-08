@@ -13,7 +13,7 @@ use GDO\File\Method\GetFile;
  */
 final class BoardImage extends Method
 {
-    public function saveLastUrl() : bool { return false; }
+    public function isSavingLastUrl() : bool { return false; }
     
     public function gdoParameters() : array
     {

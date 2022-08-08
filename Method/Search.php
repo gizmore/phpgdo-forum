@@ -28,7 +28,7 @@ final class Search extends MethodQueryList
 		return GDO_ForumThread::table();
 	}
 
-	public function getTitle()
+	public function getMethodTitle() : string
 	{
 	    $term = $this->getSearchTerm();
 		return t('list_forum_search', [$term ? html($term) : t('anything')]);

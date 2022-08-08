@@ -34,9 +34,9 @@ return array(
 'cfg_forum_attachment_level' => 'Userlevel required for attachments',
 'cfg_forum_post_level' => 'Userlevel required to post',
 'cfg_forum_latest_post_date' => 'Latest forum post date',
-'cfg_tt_forum_latest_post_date' => 'This timestamp is not configurable',
+'tt_cfg_forum_latest_post_date' => 'This timestamp is not configurable',
 'cfg_forum_mail_sent_for_post' => 'Latest PostId for mail queue.',
-'cfg_tt_forum_mail_sent_for_post' => 'This internal setting is not configurable.',
+'tt_cfg_forum_mail_sent_for_post' => 'This internal setting is not configurable.',
 'cfg_forum_num_latest' => 'Number of latest threads shown in root board',
 #######################################################################
 'msg_subscribed' => 'Vi siete ischritti via Mail.',

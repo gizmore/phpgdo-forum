@@ -73,7 +73,7 @@ $cont = GDT_Container::make();
 $user = $post->getCreator();
 $numPosts = Module_Forum::instance()->userSettingVar($user, 'forum_posts');
 $cont->addFields([
-    GDT_ProfileLink::make()->withAvatar()->withNickname()->forUser($user),
+    GDT_ProfileLink::make()->nickname()->avatarUser($user),
     $user->gdoColumn('user_level'),
     GDT_UInt::make()->initial($numPosts)->label('num_posts'),
 ]);
