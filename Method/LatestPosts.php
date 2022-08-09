@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Table\MethodQueryList;
+use GDO\DB\Query;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\Module_Forum;
 use GDO\Table\GDT_Table;
@@ -31,7 +32,7 @@ final class LatestPosts extends MethodQueryList
 	    $table->title('forum_list_latest_threads');
 	}
 	
-	public function getQuery()
+	public function getQuery() : Query
 	{
 	    $user = GDO_User::current();
 	    return

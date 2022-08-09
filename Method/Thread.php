@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Core\Website;
+use GDO\DB\Query;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\Module_Forum;
 use GDO\Forum\GDO_ForumPost;
@@ -71,7 +72,7 @@ final class Thread extends MethodQueryCards
         return GDO_ForumPost::table();
     }
     
-    public function getQuery()
+    public function getQuery() : Query
     {
         $thread = $this->getThread();
         $uid = GDO_User::current()->getID();

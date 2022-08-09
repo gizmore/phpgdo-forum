@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Table\MethodQueryList;
+use GDO\DB\Query;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDT_ForumBoard;
 use GDO\Table\GDT_Table;
@@ -32,7 +33,7 @@ final class ChildBoards extends MethodQueryList
         return $this->gdoParameterValue('board');
     }
     
-    public function getQuery()
+    public function getQuery() : Query
     {
         $board = $this->getBoard();
         return

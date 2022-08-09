@@ -8,6 +8,7 @@ use GDO\Forum\Module_Forum;
 use GDO\User\GDO_User;
 use GDO\Table\GDT_Table;
 use GDO\Core\GDT_Response;
+use GDO\DB\Query;
 use GDO\UI\GDT_Button;
 use GDO\UI\GDT_Container;
 
@@ -40,7 +41,7 @@ final class UnreadThreads extends MethodQueryList
         return $response->addField(parent::execute());
     }
     
-    public function getQuery()
+    public function getQuery() : Query
     {
         $user = GDO_User::current();
         return GDO_ForumUnread::table()->

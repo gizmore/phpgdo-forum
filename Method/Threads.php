@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Table\MethodQueryList;
+use GDO\DB\Query;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\GDT_ForumBoard;
 use GDO\Forum\GDO_ForumBoard;
@@ -48,7 +49,7 @@ final class Threads extends MethodQueryList
         return GDO_ForumThread::table();
     }
     
-    public function getQuery()
+    public function getQuery() : Query
     {
         $board = $this->getBoard();
         return
