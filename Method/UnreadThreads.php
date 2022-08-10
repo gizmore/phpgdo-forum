@@ -52,7 +52,7 @@ final class UnreadThreads extends MethodQueryList
                fetchTable(GDO_ForumThread::table());
     }
     
-    public function getCountQuery()
+    public function getCountQuery() : Query
     {
         return $this->getQuery()->selectOnly('COUNT(DISTINCT(thread_id))');
     }
