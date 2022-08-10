@@ -19,7 +19,7 @@ use GDO\User\GDO_User;
 final class Thread extends MethodQueryCards
 {
     public function isPaginated() { return true; }
-    public function isOrdered() { return false; }
+    public function isOrdered() : bool { return false; }
     public function isSearched() { return false; }
     
     public function getDefaultOrder() : ?string { return 'IFNULL(post_edited, post_created)'; }

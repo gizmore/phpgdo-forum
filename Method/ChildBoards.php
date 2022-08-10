@@ -15,7 +15,7 @@ final class ChildBoards extends MethodQueryList
 {
     public function gdoTable() { return GDO_ForumBoard::table(); }
     public function isPaginated() { return false; }
-    public function isOrdered() { return false; }
+    public function isOrdered() : bool { return false; }
     public function isSearched() { return false; }
     
     public function gdoParameters() : array

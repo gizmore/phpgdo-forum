@@ -18,7 +18,7 @@ final class Threads extends MethodQueryList
 {
     public function getHeaderName() { return 't'; }
     
-    public function isOrdered() { return false; }
+    public function isOrdered() : bool { return false; }
     public function isPaginated() { return true; }
     public function isSearched() { return false; }
     

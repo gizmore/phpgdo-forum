@@ -20,7 +20,7 @@ use GDO\UI\GDT_Container;
  */
 final class UnreadThreads extends MethodQueryList
 {
-    public function isOrdered() { return false; }
+    public function isOrdered() : bool { return false; }
     public function isSearched() { return false; }
     
     public function beforeExecute() : void

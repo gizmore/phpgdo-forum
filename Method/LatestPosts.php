@@ -18,7 +18,7 @@ final class LatestPosts extends MethodQueryList
 {
     public function isPaginated() { return false; }
     public function isSearched() { return false; }
-    public function isOrdered() { return false; }
+    public function isOrdered() : bool { return false; }
 
 	public function gdoTable() { return GDO_ForumThread::table(); }
 	
