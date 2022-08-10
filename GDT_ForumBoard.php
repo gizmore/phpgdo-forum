@@ -71,12 +71,12 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 	 	$this->completionHref(href('Forum', 'BoardCompletion'));
 	}
 	
-	public function renderCell() : string
+	public function renderHTML() : string
 	{
 		return GDT_Template::php('Forum', 'cell/board.php', ['field'=>$this]);
 	}
 	
-// 	public function renderChoice($choice)
+// 	public function renderOption($choice)
 // 	{
 // 		return GDT_Template::php('Forum', 'choice/board.php', ['field'=>$this,'board' =>$choice]);
 // 	}

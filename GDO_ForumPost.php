@@ -129,7 +129,7 @@ final class GDO_ForumPost extends GDO
     ##############
     public function signatureField() { return Module_Forum::instance()->userSetting($this->getCreator(), 'signature'); }
     public function hasSignature() { return !empty($this->signatureField()->var); }
-    public function displaySignature() { return $this->signatureField()->renderCell(); }
+    public function displaySignature() { return $this->signatureField()->renderHTML(); }
     public function displayCreated() { return tt($this->getCreated()); }
     public function renderCard() : string { return GDT_Template::php('Forum', 'card/post.php', ['post'=>$this]); }
     public function canRead() { return GDO_User::current()->getLevel() >= $this->getLevel(); }

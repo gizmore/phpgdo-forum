@@ -54,7 +54,7 @@ if ($attachment)
 <hr/>
 <div class="gdo-attachment" layout="row" flex layout-fill layout-align="left center">
   <div>{$downloadButton}</div>
-  <div>{$post->gdoColumn('post_attachment')->previewHREF($post->hrefPreview())->renderCell()}</div>
+  <div>{$post->gdoColumn('post_attachment')->previewHREF($post->hrefPreview())->renderHTML()}</div>
 </div>
 EOT;
 }
@@ -80,4 +80,4 @@ $cont->addFields([
 GDT_Hook::callHook('DecoratePostUser', $card, $cont, $user);
 $card->image($cont);
 
-echo $card->renderCell();
+echo $card->renderHTML();

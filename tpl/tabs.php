@@ -73,4 +73,4 @@ if ($user->isStaff())
 $bar->addField(GDT_Button::make()->href(href('Forum', 'UnreadThreads'))->label('tab_forum_unread', [GDO_ForumUnread::countUnread($user)]));
 
 # Render Bar
-echo $bar->renderCell();
+echo $bar->renderHTML();

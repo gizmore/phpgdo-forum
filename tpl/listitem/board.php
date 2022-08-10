@@ -27,7 +27,7 @@ $li->addClass($readClass);
 # Image content
 if ($board->hasImage())
 {
-    $li->rawIcon(GDT_Image::fromFile($board->getImage())->renderCell());
+    $li->rawIcon(GDT_Image::fromFile($board->getImage())->renderHTML());
 }
 else
 {

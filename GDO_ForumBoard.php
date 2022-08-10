@@ -134,7 +134,7 @@ final class GDO_ForumBoard extends GDO_Tree
     public function renderName() : string { return html($this->getTitle()); }
     public function displayDescription() { return html($this->getDescription()); }
     public function renderList() : string { return GDT_Template::php('Forum', 'listitem/board.php', ['board'=>$this]); }
-    public function renderChoice() : string { return sprintf('%s - %s', $this->getID(), $this->renderName()); }
+    public function renderOption() : string { return sprintf('%s - %s', $this->getID(), $this->renderName()); }
     
     public function getPageCount()
     {
