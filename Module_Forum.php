@@ -25,7 +25,7 @@ use GDO\User\GDO_Permission;
 final class Module_Forum extends GDO_Module
 {
 	public function getDependencies() : array { return ['File']; }
-	public function hrefAdministration() : ?string { return $this->href('Admin'); }
+	public function href_administrate_module() : ?string { return $this->href('Admin'); }
 	
     ##############
     ### Module ###
