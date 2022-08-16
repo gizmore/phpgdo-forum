@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Table\MethodQueryList;
+use GDO\Core\GDO;
 use GDO\DB\Query;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDT_ForumBoard;
@@ -13,7 +14,7 @@ use GDO\Table\GDT_Table;
  */
 final class ChildBoards extends MethodQueryList
 {
-    public function gdoTable() { return GDO_ForumBoard::table(); }
+    public function gdoTable() : GDO { return GDO_ForumBoard::table(); }
     public function isPaginated() { return false; }
     public function isOrdered() : bool { return false; }
     public function isSearched() { return false; }

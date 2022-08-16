@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Table\MethodQueryList;
+use GDO\Core\GDO;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\Module_Forum;
 
@@ -23,7 +24,7 @@ final class Search extends MethodQueryList
 	#######################
 	### MethodQueryList ###
 	#######################
-	public function gdoTable()
+	public function gdoTable() : GDO
 	{
 		return GDO_ForumThread::table();
 	}

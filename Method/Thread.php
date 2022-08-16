@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDO;
 use GDO\Core\Website;
 use GDO\DB\Query;
 use GDO\Forum\GDO_ForumThread;
@@ -67,7 +68,7 @@ final class Thread extends MethodQueryCards
     	$this->init();
         return $this->getThread()->canView($user);
     }
-    public function gdoTable()
+    public function gdoTable() : GDO
     {
         return GDO_ForumPost::table();
     }

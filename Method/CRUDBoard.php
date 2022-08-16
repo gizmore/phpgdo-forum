@@ -13,7 +13,7 @@ use GDO\User\GDT_Permission;
 
 final class CRUDBoard extends MethodCrud
 {
-    public function gdoTable() { return GDO_ForumBoard::table(); }
+    public function gdoTable() : GDO { return GDO_ForumBoard::table(); }
     public function hrefList() : string { return href('Forum', 'Boards', '&board='.Common::getRequestInt('board')); }
    
     public function canCreate(GDO $gdo) { return GDO_User::current()->isStaff(); }

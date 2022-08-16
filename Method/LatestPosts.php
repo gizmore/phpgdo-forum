@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Table\MethodQueryList;
+use GDO\Core\GDO;
 use GDO\DB\Query;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\Module_Forum;
@@ -20,7 +21,7 @@ final class LatestPosts extends MethodQueryList
     public function isSearched() { return false; }
     public function isOrdered() : bool { return false; }
 
-	public function gdoTable() { return GDO_ForumThread::table(); }
+	public function gdoTable() : GDO { return GDO_ForumThread::table(); }
 	
 	public function numLatestThreads()
 	{

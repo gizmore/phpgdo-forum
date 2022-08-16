@@ -7,6 +7,7 @@ use GDO\Forum\GDO_ForumUnread;
 use GDO\Forum\Module_Forum;
 use GDO\User\GDO_User;
 use GDO\Table\GDT_Table;
+use GDO\Core\GDO;
 use GDO\Core\GDT_Response;
 use GDO\DB\Query;
 use GDO\UI\GDT_Button;
@@ -28,7 +29,7 @@ final class UnreadThreads extends MethodQueryList
         Module_Forum::instance()->renderTabs();
     }
     
-    public function gdoTable()
+    public function gdoTable() : GDO
     {
         return GDO_ForumThread::table();
     }

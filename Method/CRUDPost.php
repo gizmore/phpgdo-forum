@@ -29,7 +29,7 @@ final class CRUDPost extends MethodCrud
 {
 	private $post;
 	
-    public function gdoTable() { return GDO_ForumPost::table(); }
+    public function gdoTable() : GDO { return GDO_ForumPost::table(); }
     public function hrefList() : string { return href('Forum', 'Thread', '&thread='.$this->thread->getID()); }
    
     public function isGuestAllowed() : bool { return Module_Forum::instance()->cfgGuestPosts(); }
