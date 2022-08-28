@@ -67,7 +67,7 @@ EOT;
 
 $card->editorFooter();
 
-$card->addField(GDT_HTML::withHTML($html));
+$card->addField(GDT_HTML::make()->var($html));
 
 $cont = GDT_Container::make();
 $user = $post->getCreator();
