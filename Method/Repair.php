@@ -29,14 +29,11 @@ final class Repair extends MethodForm
     
     public function isTransactional() : bool { return false; }
     
-    public function beforeExecute() : void
+    public function onRenderTabs() : void
     {
-        if (Application::instance()->isHTML())
-        {
-            $this->renderNavBar();
-            GDT_Page::$INSTANCE->topTabs->addField(
-                Admin::make()->adminTabs());
-        }
+        $this->renderNavBar();
+        GDT_Page::$INSTANCE->topTabs->addField(
+            Admin::make()->adminTabs());
     }
     
     ##################

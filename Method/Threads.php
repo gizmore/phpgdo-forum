@@ -32,7 +32,7 @@ final class Threads extends MethodQueryList
         ];
     }
     
-    public function beforeExecute() : void
+    public function onRenderTabs() : void
     {
         Module_Forum::instance()->renderTabs();
     }

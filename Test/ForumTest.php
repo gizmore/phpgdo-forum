@@ -25,7 +25,7 @@ final class ForumTest extends TestCase
             'board_allow_threads' => '1',
             'create' => 'create',
         ];
-        GDT_MethodTest::make()->method(CRUDBoard::make())->parameters($p)->execute();
+        GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p)->execute();
         $this->assert200("Check if Forum::CRUDBoard has easy to spot errors.");
         
         $p = [
@@ -35,7 +35,7 @@ final class ForumTest extends TestCase
             'board_allow_threads' => '1',
             'create' => 'create',
         ];
-        GDT_MethodTest::make()->method(CRUDBoard::make())->parameters($p)->execute();
+        GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p)->execute();
         $this->assert200("Check if Forum::CRUDBoard has easy to spot errors.");
         
         assertEquals(3, GDO_ForumBoard::table()->countWhere(), 'Check if 3 forum boards were created.');
@@ -45,14 +45,13 @@ final class ForumTest extends TestCase
     {
         # Look at boards again to make sure we are not in a deadloop.
         $this->callMethod(Boards::make());
-        $gp = [
-            'board' => '3',
-        ];
         $p = [
+            'board' => '3',
             'thread_title' => 'Test Thread 1',
             'post_message' => '<p>Test Thread Message 1</p>',
         ];
-        GDT_MethodTest::make()->method(CreateThread::make())->getParameters($gp)->parameters($p)->execute();
+        GDT_MethodTest::make()->
+        	method(CreateThread::make())->inputs($p)->execute();
         $this->assert200("Check if CreateThread results in code 200.");
         $threads = GDO_ForumThread::table()->all();
         assertCount(1, $threads, 'Check if we have 1 thread');

@@ -27,7 +27,7 @@ final class Thread extends MethodQueryCards
     
     public function getDefaultIPP() : int { return 10; }
     
-    public function beforeExecute() : void
+    public function onRenderTabs() : void
     {
         Module_Forum::instance()->renderTabs();
     }

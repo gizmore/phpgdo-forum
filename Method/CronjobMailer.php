@@ -45,7 +45,7 @@ final class CronjobMailer extends MethodCronjob
         
         # Sent to those who subscribe the whole board
         $query = GDO_UserSetting::table()->select('gdo_user.*')->joinObject('uset_user');
-        $query->where("uset_name='forum_subscription'")->where("uset_value='fsub_all'");
+        $query->where("uset_name='forum_subscription'")->where("uset_var='fsub_all'");
         $result = $query->fetchTable(GDO_User::table())->uncached()->exec();
         while ($user = $result->fetchObject())
         {
@@ -59,7 +59,7 @@ final class CronjobMailer extends MethodCronjob
         # Sent to those who subscribe their own threads
         $query = GDO_ForumPost::table()->select('gdo_user.*')->joinObject('post_creator');
         $query->join("LEFT JOIN gdo_usersetting ON uset_user=user_id AND uset_name='forum_subscription'");
-        $query->where("post_thread={$post->getThreadID()}")->where("uset_value IS NULL OR uset_value = 'fsub_own'");
+        $query->where("post_thread={$post->getThreadID()}")->where("uset_var IS NULL OR uset_var = 'fsub_own'");
         $result = $query->fetchTable(GDO_User::table())->uncached()->exec();
         while ($user = $result->fetchObject())
         {

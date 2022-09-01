@@ -40,7 +40,7 @@ final class CRUDPost extends MethodCrud
     
     private $thread;
     
-    public function beforeExecute() : void
+    public function onRenderTabs() : void
     {
         Module_Forum::instance()->renderTabs();
     }

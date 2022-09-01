@@ -20,7 +20,7 @@ final class CRUDBoard extends MethodCrud
     public function canUpdate(GDO $gdo) { return GDO_User::current()->isStaff(); }
     public function canDelete(GDO $gdo) { return GDO_User::current()->isAdmin(); }
     
-    public function beforeExecute() : void
+    public function onRenderTabs() : void
     {
         Module_Forum::instance()->renderTabs();
     }

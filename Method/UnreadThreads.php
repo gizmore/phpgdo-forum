@@ -24,7 +24,7 @@ final class UnreadThreads extends MethodQueryList
     public function isOrdered() : bool { return false; }
     public function isSearched() { return false; }
     
-    public function beforeExecute() : void
+    public function onRenderTabs() : void
     {
         Module_Forum::instance()->renderTabs();
     }

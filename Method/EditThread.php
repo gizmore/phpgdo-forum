@@ -31,7 +31,7 @@ final class EditThread extends MethodForm
     public function isUserRequired() : bool { return true; }
     public function isGuestAllowed() : bool { return Module_Forum::instance()->cfgGuestPosts(); }
     
-    public function beforeExecute() : void
+    public function onRenderTabs() : void
     {
         Module_Forum::instance()->renderTabs();
     }
