@@ -15,10 +15,10 @@ use GDO\User\GDO_User;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDO_ForumUnread;
 use GDO\Forum\GDT_ForumBoard;
-use GDO\Util\Common;
 
 /**
  * Start a new thread.
+ * 
  * @author gizmore
  * @see GDO_ForumBoard
  * @see GDO_ForumThread
@@ -51,11 +51,7 @@ final class CreateThread extends MethodForm
      */
     public function getBoard()
     {
-        if (!$this->board)
-        {
-            $this->board = GDO_ForumBoard::findById(Common::getRequestString('board'));
-        }
-        return $this->board;
+    	return $this->gdoParameterValue('board');
     }
     
     public function execute()
@@ -74,14 +70,14 @@ final class CreateThread extends MethodForm
         $board = $this->getBoard();
         $gdo = GDO_ForumThread::table();
         $posts = GDO_ForumPost::table();
-        $form->addFields(array(
-            $gdo->gdoColumn('thread_board')->noChoices($board)->initial($board ? $board->getID() : null)->editable(false),
+        $form->addFields(
+            $gdo->gdoColumn('thread_board')->noChoices($board)->initial($board ? $board->getID() : null)->writeable(false),
             $gdo->gdoColumn('thread_level'),
             $gdo->gdoColumn('thread_title'),
             $posts->gdoColumn('post_message'),
             $posts->gdoColumn('post_attachment'),
             GDT_AntiCSRF::make(),
-        ));
+        );
         $form->actions()->addField(GDT_Submit::make());
         
         $module = Module_Forum::instance();
@@ -115,9 +111,9 @@ final class CreateThread extends MethodForm
     
     public function afterExecute() : void
     {
-        if ($this->getForm()->validated)
-        {
-            GDT_Hook::callWithIPC('ForumPostCreated', $this->post);
+       	if (isset($this->post) && $this->post->isPersisted())
+       	{
+       		GDT_Hook::callWithIPC('ForumPostCreated', $this->post);
         }
     }
 

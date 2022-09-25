@@ -39,6 +39,7 @@ final class Boards extends Method
 
         $tVars = array(
             'board' => $board,
+        	'inputs' => $this->getInputs(),
         );
         
         return $this->templatePHP('boards.php', $tVars);

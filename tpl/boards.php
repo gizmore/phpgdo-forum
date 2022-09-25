@@ -1,21 +1,23 @@
 <?php
+namespace GDO\Forum\tpl;
 /** @var $board \GDO\Forum\GDO_ForumBoard **/
-
+/** @var $inputs array **/
 use GDO\UI\GDT_Button;
 use GDO\Forum\Module_Forum;
 use GDO\Forum\Method\LatestPosts;
 use GDO\Forum\Method\Threads;
 use GDO\Forum\Method\ChildBoards;
+use GDO\Core\GDT;
 
 # 0. Newest threads
 $numLatest = Module_Forum::instance()->cfgNumLatestThreads();
 if ($numLatest && $board->isRoot())
 {
-    echo LatestPosts::make()->executeWithInit()->render();
+    echo LatestPosts::make()->executeWithInputs(GDT::EMPTY_ARRAY)->render();
 }
 
 # 1. Children boards as list.
-echo ChildBoards::make()->executeWithInit()->render();
+echo ChildBoards::make()->executeWithInputs($inputs)->render();
 
 # 2. Create thread button
 if ($board->allowsThreads())
@@ -26,6 +28,5 @@ if ($board->allowsThreads())
 # 3. Threads as list
 if ($board->allowsThreads())
 {
-    $_REQUEST['board'] = $board->getID();
-    echo Threads::make()->execute()->render();
+    echo Threads::make()->executeWithInputs(['board' => $board->getID()])->render();
 }

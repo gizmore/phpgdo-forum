@@ -1,4 +1,6 @@
-<?php /** @var $board \GDO\Forum\GDO_ForumBoard **/ 
+<?php
+namespace GDO\Forum\tpl\listitem;
+/** @var $board \GDO\Forum\GDO_ForumBoard **/ 
 use GDO\User\GDO_User;
 use GDO\Table\GDT_ListItem;
 use GDO\UI\GDT_Paragraph;
@@ -25,21 +27,21 @@ $li = GDT_ListItem::make();
 $li->addClass($readClass);
 
 # Image content
-if ($board->hasImage())
-{
-    $li->rawIcon(GDT_Image::fromFile($board->getImage())->renderHTML());
-}
-else
-{
-    $li->icon('book')->iconSize(26);
-}
+// if ($board->hasImage())
+// {
+//     $li->rawIcon(GDT_Image::fromFile($board->getImage())->renderHTML());
+// }
+// else
+// {
+//     $li->icon('book')->iconSize(26);
+// }
 
-$li->title(GDT_Headline::make()->level(4)->textRaw($board->renderName()));
-$li->subtitle(GDT_Headline::make()->level(5)->textRaw($board->displayDescription()));
+$li->titleRaw($board->renderName());
+$li->subtitle($board->displayDescription());
 
-$li->right(GDT_Container::make()->horizontal()->addFields([
+$li->content(GDT_Container::make()->horizontal()->addFields(
     GDT_Paragraph::make()->text('board_stats', [$board->getUserThreadCount(), $board->getUserPostCount()])
-]));
+));
 
 $lastThread = $board->getLastThread();
 
@@ -49,9 +51,9 @@ if ($lastThread)
 }
 
 # Menu
-$li->actions()->addFields([
+$li->actions()->addFields(
 	GDT_Button::make('view')->href($href)->icon('view'),
-]);
+);
 
 $module = Module_Forum::instance();
 if ($module->userSettingVar($user, 'forum_subscription') !== GDT_ForumSubscribe::ALL)

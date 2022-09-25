@@ -25,23 +25,36 @@ final class CRUDBoard extends MethodCrud
         Module_Forum::instance()->renderTabs();
     }
     
+    public function gdoParameters() : array
+    {
+    	return array_merge(parent::gdoParameters(), [
+    		GDT_ForumBoard::make('board'),
+    	]);
+    }
+    
     public function createForm(GDT_Form $form) : void
     {
         $gdo = GDO_ForumBoard::table();
         
-        $parentId = Common::getRequestString('board', $this->gdo ? $this->gdo->getParentID() : 1);
-        $boardId = $this->gdo ? $this->gdo->getID() : 0;
+        $boardId = 0;
+        $parentId = $this->gdoParameterVar('board');
+        if (isset($this->gdo))
+        {
+	        $boardId = $this->gdo->getID();
+	        $parentId = $parentId ? $parentId : $this->gdo->getParentID();
+        }
+        $parentId = $parentId ? $parentId : 1;
         
-        $form->addFields(array(
+        $form->addFields(
             $gdo->gdoColumn('board_title'),
             $gdo->gdoColumn('board_sort'),
             $gdo->gdoColumn('board_description'),
-            GDT_ForumBoard::make('board_parent')->label('parent')->notNull()->initial($parentId)->writable($boardId != 1),
+            GDT_ForumBoard::make('board_parent')->label('parent')->notNull()->initial($parentId)->writeable($boardId != 1),
             GDT_Permission::make('board_permission')->emptyInitial(t('sel_no_permissions')),
             $gdo->gdoColumn('board_allow_threads'),
             $gdo->gdoColumn('board_sticky'),
             $gdo->gdoColumn('board_image')->previewHREF(href('Forum', 'BoardImage', '&board='.$boardId.'&id={id}')),
-        ));
+        );
         
         $this->createFormButtons($form);
     }
