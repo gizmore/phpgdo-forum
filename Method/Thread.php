@@ -65,7 +65,7 @@ final class Thread extends MethodQueryCards
     
     public function hasPermission(GDO_User $user) : bool
     {
-    	$this->init();
+//     	$this->onInitTable();
         return $this->getThread()->canView($user);
     }
     public function gdoTable() : GDO

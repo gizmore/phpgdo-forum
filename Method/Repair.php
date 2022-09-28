@@ -41,8 +41,8 @@ final class Repair extends MethodForm
     ##################
     public function createForm(GDT_Form $form) : void
     {
-        $form->info(t('info_forum_repair'));
-        $form->addFields([
+        $form->info('info_forum_repair');
+        $form->addFields(
             GDT_Checkbox::make('repair_empty_threads')->initial('1'),
             GDT_Checkbox::make('repair_tree')->initial('1'),
             GDT_Checkbox::make('repair_firstpost_flag')->initial('1'),
@@ -53,7 +53,7 @@ final class Repair extends MethodForm
             GDT_Checkbox::make('repair_user_postcount')->initial('1'),
             GDT_Checkbox::make('repair_readmark')->initial('1'),
             GDT_AntiCSRF::make(),
-        ]);
+        );
         $form->actions()->addField(GDT_Submit::make());
     }
 

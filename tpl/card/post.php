@@ -24,25 +24,20 @@ $card = GDT_Card::make("post_$id")->gdo($post)->addClass('forum-post')->addClass
 $actions = $card->actions();
 if ($post->isPersisted())
 {
-    $actions->addField(GDT_EditButton::make()->href($post->hrefEdit())->editable($post->canEdit($user)));
+    $actions->addField(GDT_EditButton::make()->href($post->hrefEdit())->writeable($post->canEdit($user)));
     $actions->addField(GDT_Button::make('btn_reply')->icon('reply')->href($post->hrefReply()));
     $actions->addField(GDT_Button::make('btn_quote')->icon('quote')->href($post->hrefQuote()));
     $actions->addField(GDT_LikeButton::make()->gdo($post));
 }
 
+
+$title = '';
 if ($post->isFirstInThread())
 {
-    $card->title(
-        GDT_Container::make()->addFields([
-            $post->getThread()->gdoColumn('thread_title'),
-            $post->gdoColumn('post_created'),
-        ])
-    );
+	$title .= $post->getThread()->getTitle();
 }
-else
-{
-    $card->title($post->gdoColumn('post_created'));
-}
+$title .= $post->getCreated();
+$card->titleRaw($title);
 
 $attachment = $post->hasAttachment() ? $post->getAttachment() : '';
 if ($attachment)
@@ -72,11 +67,11 @@ $card->addField(GDT_HTML::make()->var($html));
 $cont = GDT_Container::make();
 $user = $post->getCreator();
 $numPosts = Module_Forum::instance()->userSettingVar($user, 'forum_posts');
-$cont->addFields([
+$cont->addFields(
     GDT_ProfileLink::make()->nickname()->avatarUser($user),
     $user->gdoColumn('user_level'),
     GDT_UInt::make()->initial($numPosts)->label('num_posts'),
-]);
+);
 GDT_Hook::callHook('DecoratePostUser', $card, $cont, $user);
 $card->image($cont);
 
