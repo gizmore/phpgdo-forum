@@ -105,7 +105,7 @@ final class CRUDPost extends MethodCrud
     public function createForm(GDT_Form $form) : void
     {
         $initialPostHTML = '';
-        if ( (!count($_POST)) && (isset($_REQUEST[$form->name]['quote'])) )
+        if ( (!count(@$_POST)) && (isset($_REQUEST[$form->name]['quote'])) )
         {
             # Prefill post on GET and quote
         	$initialPostHTML = $this->initialMessage();
