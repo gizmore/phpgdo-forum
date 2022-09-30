@@ -14,7 +14,7 @@ final class Admin extends Method
     public function adminTabs()
     {
         return GDT_Bar::makeWith(
-            GDT_Link::make('link_forum_repair')->label('mt_forum_repair')->href(href('Forum', 'Repair'))
+            GDT_Link::make('link_forum_repair')->text('mt_forum_repair')->href(href('Forum', 'Repair'))
         );
     }
     
