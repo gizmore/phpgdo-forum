@@ -243,7 +243,7 @@ final class Module_Forum extends GDO_Module
 				$posts = $root->getUserPostCount();
 				$link = GDT_Link::make()->text('link_forum', [
 					$posts
-				])->href(href('Forum', 'Boards'));
+				])->href(href('Forum', 'Boards'))->icon('book');
 				if ($user->isAuthenticated())
 				{
 					if (GDO_ForumUnread::countUnread($user) > 0)
