@@ -37,17 +37,17 @@ final class Boards extends Method
             return $this->error('err_permission_read');
         }
 
-        $tVars = array(
+        $tVars = [
             'board' => $board,
         	'inputs' => $this->getInputs(),
-        );
+        ];
         
         return $this->templatePHP('boards.php', $tVars);
     }
     
     public function getMethodTitle() : string
     {
-        if ($this->board)
+    	if (isset($this->board))
         {
             return $this->board->getTitle();
         }

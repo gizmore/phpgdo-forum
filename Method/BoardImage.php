@@ -15,6 +15,11 @@ final class BoardImage extends Method
 {
     public function isSavingLastUrl() : bool { return false; }
     
+    public function getMethodTitle() : string
+    {
+    	return $this->getBoard()->getTitle();
+    }
+    
     public function gdoParameters() : array
     {
         return [

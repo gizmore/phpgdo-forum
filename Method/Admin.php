@@ -11,6 +11,11 @@ final class Admin extends Method
 {
     use MethodAdmin;
     
+    public function getMethodTitle() : string
+    {
+    	return t('admin');
+    }
+    
     public function adminTabs()
     {
         return GDT_Bar::makeWith(
