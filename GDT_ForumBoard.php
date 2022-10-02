@@ -49,7 +49,7 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 	    return $this;
 	}
 
-	public function getBoard() : GDO_ForumBoard
+	public function getBoard() : ?GDO_ForumBoard
 	{
 		return $this->getValue();
 	}
