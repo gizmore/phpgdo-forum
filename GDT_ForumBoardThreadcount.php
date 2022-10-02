@@ -5,6 +5,8 @@ use GDO\Core\GDO;
 use GDO\Core\GDT_Virtual;
 use GDO\DB\Query;
 use GDO\User\GDO_User;
+use GDO\Core\GDT;
+use GDO\Core\GDT_UInt;
 
 /**
  * Virtual board column.
@@ -14,6 +16,12 @@ use GDO\User\GDO_User;
  */
 final class GDT_ForumBoardThreadcount extends GDT_Virtual
 {
+	protected function __construct()
+	{
+		parent::__construct();
+// 		$this->gdtType(GDT_UInt::make());
+	}
+	
     /**
      * @return GDO_ForumBoard
      */

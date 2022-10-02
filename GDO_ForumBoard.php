@@ -16,6 +16,7 @@ use GDO\File\GDO_File;
 use GDO\Table\GDT_PageMenu;
 use GDO\Table\GDT_Sort;
 use GDO\Core\GDO;
+use GDO\Core\GDT_UInt;
 
 /**
  * A board inherits from GDO_Tree.
@@ -56,7 +57,7 @@ final class GDO_ForumBoard extends GDO_Tree
         	GDT_Checkbox::make('board_allow_threads')->initial('0'),
         	GDT_Checkbox::make('board_allow_guests')->initial('0'),
             GDT_Checkbox::make('board_sticky')->initial('0'),
-            GDT_ForumBoardThreadcount::make('board_user_count_'), # thread- and postcount via an ugly hack @see GDT_ForumBoardThreadcount
+            GDT_ForumBoardThreadcount::make('board_user_count_')->gdtType(GDT_UInt::make()), # thread- and postcount via an ugly hack @see GDT_ForumBoardThreadcount
             GDT_ForumPost::make('board_lastpost'),
         	GDT_ImageFile::make('board_image')->scaledVersion('thumb', 48, 48),
             GDT_Sort::make('board_sort'),
