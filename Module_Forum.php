@@ -13,6 +13,7 @@ use GDO\Core\GDT_UInt;
 use GDO\UI\GDT_Page;
 use GDO\Core\GDT_Template;
 use GDO\User\GDO_Permission;
+use GDO\User\GDT_ACLRelation;
 
 /**
  * GDO Forum Module.
@@ -67,6 +68,15 @@ final class Module_Forum extends GDO_Module
 	# #############
 	# ## Config ###
 	# #############
+	public function getACLDefaults() : ?array
+	{
+		return [
+			'forum_posts' => [GDT_ACLRelation::ALL, 0, null],
+			'forum_threads' => [GDT_ACLRelation::ALL, 0, null],
+			'forum_readmark' => [GDT_ACLRelation::HIDDEN, 0, null],
+		];
+	}
+	
 	public function getUserSettings(): array
 	{
 		return [
@@ -77,7 +87,7 @@ final class Module_Forum extends GDO_Module
 	public function getUserSettingBlobs(): array
 	{
 		return [
-			GDT_Message::make('signature')->max(4096)->label('signature'),
+			GDT_Message::make('signature')->max(4096)->label('signature')->noacl(),
 		];
 	}
 

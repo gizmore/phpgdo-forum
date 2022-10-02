@@ -55,7 +55,7 @@ final class UnsubscribeAll extends Method
         Module_Forum::instance()->saveUserSetting(
             $user, 'forum_subscription', GDT_ForumSubscribe::NONE);
         
-        return Website::redirectMessage('msg_unsubscribed', null, hrefDefault());
+        return $this->redirectMessage('msg_unsubscribed', null, hrefDefault());
     }
 
 }

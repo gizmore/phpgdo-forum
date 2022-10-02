@@ -16,7 +16,7 @@ final class MarkAllRead extends Method
     {
         $user = GDO_User::current();
         GDO_ForumUnread::table()->deleteWhere("unread_user={$user->getID()}");
-        return Website::redirectMessage('msg_forum_marked_all_unread', null, href('Forum', 'Boards'));
+        return $this->redirectMessage('msg_forum_marked_all_unread', null, href('Forum', 'Boards'));
     }
 
 }

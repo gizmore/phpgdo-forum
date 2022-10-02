@@ -42,7 +42,7 @@ final class Unsubscribe extends Method
         }
         
         $href = Website::hrefBack($href);
-        return Website::redirectMessage('msg_unsubscribed', null, $href);
+        return $this->redirectMessage('msg_unsubscribed', null, $href);
     }
 
 }

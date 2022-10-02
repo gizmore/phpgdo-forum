@@ -6,7 +6,6 @@ use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\GDO_ForumUnread;
 use GDO\Forum\Module_Forum;
 use GDO\User\GDO_User;
-use GDO\Table\GDT_Table;
 use GDO\Core\GDO;
 use GDO\Core\GDT_Response;
 use GDO\DB\Query;
@@ -58,12 +57,12 @@ final class UnreadThreads extends MethodQueryList
         return $this->getQuery()->selectOnly('COUNT(DISTINCT(thread_id))');
     }
     
-    public function setupTitle(GDT_Table $table)
+    public function getTableTitle()
     {
         $user = GDO_User::current();
-        $threadcount = $table->pagemenu->numItems;
+//         $threadcount = GDO_ForumUnread::table()->countUnread($user)Thread::table()->coun$this->thtable->pagemenu->numItems;
         $postcount = GDO_ForumUnread::table()->countUnread($user);
-        $table->title('list_forum_unreadthreads', [$threadcount, $postcount]);
+        return t('list_forum_unreadthreads', [t('unknown'), $postcount]);
     }
     
 }

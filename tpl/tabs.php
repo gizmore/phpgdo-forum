@@ -15,7 +15,7 @@ $module = Module_Forum::instance();
 
 $board = GDO_ForumBoard::findById(Common::getRequestString('board', $module->cfgRootID()));
 
-$bar->addField(GDT_Button::make()->icon('settings')->label('link_settings')->href(href('Account', 'Settings', '&module=Forum')));
+$bar->addField(GDT_Button::make()->icon('settings')->label('link_settings')->href(href('Account', 'Settings', '&module=Forum&opened=1')));
 
 # Header Create Board Button
 if ($user->isStaff())

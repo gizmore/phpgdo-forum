@@ -106,7 +106,7 @@ final class CreateThread extends MethodForm
         $module->increaseSetting('forum_threads');
         $module->increaseSetting('forum_posts');
         $href = href('Forum', 'Thread', "&post={$post->getID()}");
-        return Website::redirectMessage('msg_thread_created', null, $href);
+        return $this->redirectMessage('msg_thread_created', null, $href);
     }
     
     public function afterExecute() : void
