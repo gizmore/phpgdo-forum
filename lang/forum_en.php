@@ -102,4 +102,6 @@ The %2$s Team',
 'cfg_forum_threads_per_page' => 'Threads per page',
 'cfg_forum_mail_enable' => 'Enable mail alerts?',
 'err_please_use_subscribe_all' => 'Please use the subscribe all button.',
+# 7.0.1
+'err_no_image' => 'This board has no image.',
 );

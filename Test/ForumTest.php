@@ -44,7 +44,8 @@ final class ForumTest extends TestCase
     public function testThreadCreation()
     {
         # Look at boards again to make sure we are not in a deadloop.
-        $this->callMethod(Boards::make());
+        GDT_MethodTest::make()->method(Boards::make())->execute();
+        $this->assert200("Check if we are not in a deadloop");
         $p = [
             'board' => '3',
             'thread_title' => 'Test Thread 1',

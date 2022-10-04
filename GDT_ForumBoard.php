@@ -1,7 +1,6 @@
 <?php
 namespace GDO\Forum;
 
-use GDO\Core\GDT_Template;
 use GDO\Core\GDT_ObjectSelect;
 
 /**
@@ -73,13 +72,11 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 	
 	public function renderHTML() : string
 	{
-		return $this->getBoard()->displayTitle();
-// 		return GDT_Template::php('Forum', 'cell/board.php', ['field'=>$this]);
+		if ($board = $this->getBoard())
+		{
+			return $board->displayTitle();
+		}
+		return t('none');
 	}
-	
-// 	public function renderOption($choice)
-// 	{
-// 		return GDT_Template::php('Forum', 'choice/board.php', ['field'=>$this,'board' =>$choice]);
-// 	}
 	
 }

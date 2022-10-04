@@ -102,4 +102,6 @@ The %2$s Team',
 'cfg_forum_threads_per_page' => 'Threads pro Seite',
 'cfg_forum_mail_enable' => 'Neue Posts per Email ankündigen?',
 'err_please_use_subscribe_all' => 'Bitte verwenden Sie den &quot;Alles Abbonieren&quot; Knopf.',
+# 7.0.1
+'err_no_image' => 'Dieses Board hat kein Bild.',
 );
