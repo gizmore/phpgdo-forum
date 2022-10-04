@@ -29,6 +29,8 @@ final class CRUDPost extends MethodCrud
 {
 	private $post;
 	
+	public function isTrivial(): bool { return false; }
+	
     public function gdoTable() : GDO { return GDO_ForumPost::table(); }
     public function hrefList() : string { return href('Forum', 'Thread', '&thread='.$this->thread->getID()); }
    

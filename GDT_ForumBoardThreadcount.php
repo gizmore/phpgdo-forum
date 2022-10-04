@@ -5,22 +5,17 @@ use GDO\Core\GDO;
 use GDO\Core\GDT_Virtual;
 use GDO\DB\Query;
 use GDO\User\GDO_User;
-use GDO\Core\GDT;
-use GDO\Core\GDT_UInt;
 
 /**
  * Virtual board column.
  * Visible threadcount for a user.
  * Visible postcount for a user.
  * @author gizmore
+ * @version 7.0.1
+ * @since 3.5.0
  */
 final class GDT_ForumBoardThreadcount extends GDT_Virtual
 {
-	protected function __construct()
-	{
-		parent::__construct();
-// 		$this->gdtType(GDT_UInt::make());
-	}
 	
     /**
      * @return GDO_ForumBoard
@@ -41,12 +36,6 @@ final class GDT_ForumBoardThreadcount extends GDT_Virtual
     {
         return $this->countValue[1];
     }
-    
-//     public function setGDOData(GDO $gdo)
-//     {
-//         $var = $gdo->gdoVar($this->name);
-//         return $this->var($var);
-//     }
     
     public function var(string $var = null) : self
     {
@@ -75,4 +64,3 @@ final class GDT_ForumBoardThreadcount extends GDT_Virtual
     }
 
 }
-

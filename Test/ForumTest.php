@@ -36,7 +36,7 @@ final class ForumTest extends TestCase
             'create' => 'create',
         ];
         GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p)->execute();
-        $this->assert200("Check if Forum::CRUDBoard has easy to spot errors.");
+        $this->assertOK("Check if Forum::CRUDBoard has easy to spot errors.");
         
         assertEquals(3, GDO_ForumBoard::table()->countWhere(), 'Check if 3 forum boards were created.');
     }
@@ -45,7 +45,7 @@ final class ForumTest extends TestCase
     {
         # Look at boards again to make sure we are not in a deadloop.
         GDT_MethodTest::make()->method(Boards::make())->execute();
-        $this->assert200("Check if we are not in a deadloop");
+        $this->assertOK("Check if we are not in a deadloop");
         $p = [
             'board' => '3',
             'thread_title' => 'Test Thread 1',
@@ -53,7 +53,7 @@ final class ForumTest extends TestCase
         ];
         GDT_MethodTest::make()->
         	method(CreateThread::make())->inputs($p)->execute();
-        $this->assert200("Check if CreateThread results in code 200.");
+        $this->assertOK("Check if CreateThread results in code 200.");
         $threads = GDO_ForumThread::table()->all();
         assertCount(1, $threads, 'Check if we have 1 thread');
         assertStringContainsString("Thread", $threads[1]->getTitle(), 'check if thread title is set');
@@ -64,7 +64,7 @@ final class ForumTest extends TestCase
         assertStringContainsString("<div", $message, 'check if post message display is output prerendered.');
         
         # Look at boards again to make sure we are not in a deadloop.
-        $this->callMethod(Boards::make());
+        GDT_MethodTest::make()->method(Boards::make())->execute();
     }
     
 }
