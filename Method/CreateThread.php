@@ -2,7 +2,6 @@
 namespace GDO\Forum\Method;
 
 use GDO\Core\GDT_Hook;
-use GDO\Core\Website;
 use GDO\Date\Time;
 use GDO\Form\GDT_AntiCSRF;
 use GDO\Form\GDT_Form;
@@ -84,18 +83,18 @@ final class CreateThread extends MethodForm
         $user = GDO_User::current();
         if (!$module->canUpload($user))
         {
-            $form->removeField('post_attachment');
+            $form->removeFieldNamed('post_attachment');
         }
     }
     
     public function formValidated(GDT_Form $form)
     {
         $module = Module_Forum::instance();
-        $thread = GDO_ForumThread::blank($form->getFormData());
+        $thread = GDO_ForumThread::blank($form->getFormVars());
         $thread->setValue('thread_lastposter', GDO_User::current());
         $thread->setVar('thread_lastposted', Time::getDate());
         $thread->insert();
-        $data = $form->getFormData();
+        $data = $form->getFormVars();
         $post = $this->post = GDO_ForumPost::blank($data);
         $post->setVar('post_thread', $thread->getID());
         $post->setVar('post_first', '1');

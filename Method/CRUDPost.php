@@ -161,7 +161,7 @@ final class CRUDPost extends MethodCrud
     public function onSubmit_btn_preview(GDT_Form $form)
     {
         $response = parent::renderPage($form);
-        $preview = GDO_ForumPost::blank($form->getFormData());
+        $preview = GDO_ForumPost::blank($form->getFormVars());
         return $response->addField(GDT_CardView::make()->gdo($preview));
     }
     

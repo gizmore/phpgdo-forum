@@ -4,7 +4,6 @@ namespace GDO\Forum\Method;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumPost;
 use GDO\User\GDO_User;
-use GDO\Util\Common;
 use GDO\File\Method\GetFile;
 use GDO\Forum\GDT_ForumPost;
 
@@ -38,7 +37,7 @@ final class DownloadAttachment extends Method
     public function execute()
     {
         $user = GDO_User::current();
-        $table = GDO_ForumPost::table();
+//         $table = GDO_ForumPost::table();
         $post = $this->getPost();
         if (!$post->canView($user))
         {

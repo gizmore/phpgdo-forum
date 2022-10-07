@@ -10,7 +10,6 @@ use GDO\Forum\GDO_ForumPost;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\Module_Forum;
 use GDO\User\GDO_User;
-use GDO\Core\Application;
 use GDO\Admin\MethodAdmin;
 use GDO\UI\GDT_Page;
 use GDO\Core\GDT_Checkbox;
@@ -18,14 +17,18 @@ use GDO\DB\Database;
 
 /**
  * Repair values like likes, lastposter, lastpostdate, etc.
+ * 
  * Used after an import from other forums or when something went wrong.
+ * 
  * @author gizmore
- * @version 6.10
- * @since 6.10
+ * @version 7.0.1
+ * @since 6.10.0
  */
 final class Repair extends MethodForm
 {
     use MethodAdmin;
+    
+    public function isTrivial(): bool { return false; }
     
     public function isTransactional() : bool { return false; }
     
@@ -41,7 +44,7 @@ final class Repair extends MethodForm
     ##################
     public function createForm(GDT_Form $form) : void
     {
-        $form->info('info_forum_repair');
+        $form->text('info_forum_repair');
         $form->addFields(
             GDT_Checkbox::make('repair_empty_threads')->initial('1'),
             GDT_Checkbox::make('repair_tree')->initial('1'),

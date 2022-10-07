@@ -20,7 +20,7 @@ $readClass = $board->hasUnreadPosts($user) ? 'gdo-forum-unread' : 'gdo-forum-rea
 $title = seo($board->getTitle());
 $href = href('Forum', 'Boards', "&board={$bid}&named={$title}&o2[page]={$board->getPageCount()}");
 $href2 = $subscribed ?
-href('Forum', 'Unsubscribe', "&board={$bid}&named={$title}") :
+href('Forum', 'UnsubscribeBoard', "&board={$bid}&named={$title}") :
 href('Forum', 'Subscribe', "&board={$bid}&named={$title}");
 
 $li = GDT_ListItem::make();

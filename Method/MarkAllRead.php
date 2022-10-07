@@ -2,7 +2,6 @@
 namespace GDO\Forum\Method;
 
 use GDO\Forum\GDO_ForumUnread;
-use GDO\Core\Website;
 use GDO\User\GDO_User;
 use GDO\Core\Method;
 
@@ -12,6 +11,11 @@ use GDO\Core\Method;
  */
 final class MarkAllRead extends Method
 {
+	public function getMethodTitle(): string
+	{
+		return t('mark_read');
+	}
+	
     public function execute()
     {
         $user = GDO_User::current();

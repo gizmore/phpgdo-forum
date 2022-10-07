@@ -18,6 +18,9 @@ final class ForumTest extends TestCase
     public function testBoardCreation()
     {
         $this->userGizmore();
+        
+        $count = GDO_ForumBoard::table()->countWhere();
+        
         $p = [
             'board_title' => 'Test Board 2',
             'board_description' => 'Beschreibung Test Board 2',
@@ -26,7 +29,7 @@ final class ForumTest extends TestCase
             'create' => 'create',
         ];
         GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p)->execute();
-        $this->assert200("Check if Forum::CRUDBoard has easy to spot errors.");
+        $this->assertOK("Check if Forum::CRUDBoard has easy to spot errors.");
         
         $p = [
             'board_title' => 'Test Board 3',
@@ -38,7 +41,7 @@ final class ForumTest extends TestCase
         GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p)->execute();
         $this->assertOK("Check if Forum::CRUDBoard has easy to spot errors.");
         
-        assertEquals(3, GDO_ForumBoard::table()->countWhere(), 'Check if 3 forum boards were created.');
+        assertEquals($count + 2, GDO_ForumBoard::table()->countWhere(), 'Check if 2 forum boards were additionally created.');
     }
     
     public function testThreadCreation()

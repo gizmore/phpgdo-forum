@@ -1,7 +1,6 @@
 <?php
 namespace GDO\Forum\Method;
 
-use GDO\Core\Website;
 use GDO\Form\GDT_AntiCSRF;
 use GDO\Form\GDT_Form;
 use GDO\Form\GDT_Submit;
@@ -10,79 +9,78 @@ use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\Module_Forum;
 use GDO\User\GDO_User;
-use GDO\Util\Common;
+use GDO\Forum\GDT_ForumThread;
+use GDO\UI\GDT_DeleteButton;
 
 /**
- * Start a new thread.
+ * Edit a thread.
+ * 
  * @author gizmore
  * @see GDO_ForumBoard
  * @see GDO_ForumThread
  * @see GDO_ForumPost
- * @version 6.10
- * @since 6.03
+ * @version 7.0.1
+ * @since 6.3.0
  */
 final class EditThread extends MethodForm
 {
-    /**
-     * @var GDO_ForumThread
-     */
-    private $thread;
+    public function isUserRequired(): bool { return true; }
+    public function isGuestAllowed(): bool { return Module_Forum::instance()->cfgGuestPosts(); }
     
-    public function isUserRequired() : bool { return true; }
-    public function isGuestAllowed() : bool { return Module_Forum::instance()->cfgGuestPosts(); }
-    
-    public function onRenderTabs() : void
+    public function onRenderTabs(): void
     {
         Module_Forum::instance()->renderTabs();
     }
     
-    public function execute()
+    public function gdoParameters(): array
     {
-        $this->thread = GDO_ForumThread::table()->find(Common::getRequestString('id'));
-        if (!$this->thread->canEdit(GDO_User::current()))
-        {
-            return $this->error('err_permission_update');
-        }
-        return parent::execute();
+    	return [
+    		GDT_ForumThread::make('id')->notNull()->withEditPermissions(),
+    	];
+    }
+    
+    public function getThread(): GDO_ForumThread
+    {
+    	return $this->gdoParameterValue('id');
     }
     
     public function createForm(GDT_Form $form) : void
     {
         $user = GDO_User::current();
-        $gdo = $this->thread;
+        $gdo = $this->gdoParameterValue('id');
         if ($user->isStaff())
         {
             $form->addField($gdo->gdoColumn('thread_board'));
         }
-        $form->addFields(array(
+        $form->addFields(
             $gdo->gdoColumn('thread_title'),
             GDT_AntiCSRF::make(),
-        ));
-        $form->actions()->addFields([
+        );
+        $form->actions()->addFields(
             GDT_Submit::make(),
-            GDT_Submit::make('delete'),
-        ]);
-//         $form->withGDOValuesFrom($gdo);
+            GDT_DeleteButton::make(),
+        );
     }
     
     public function formValidated(GDT_Form $form)
     {
-        $this->thread->saveVar('thread_title', $form->getFormVar('thread_title'));
+        $this->getThread()->saveVar('thread_title', $form->getFormVar('thread_title'));
         if ($form->hasChanged('thread_board'))
         {
             $this->changeBoard($form->getFormValue('thread_board'));
         }
-        $url = href('Forum', 'Thread', '&thread='.$this->thread->getID());
+        $url = href('Forum', 'Thread', '&thread='.$this->getThread()->getID());
         return $this->redirectMessage('msg_thread_edited', null, $url);
     }
     
     private function changeBoard(GDO_ForumBoard $newBoard)
     {
-        $postsBy = $this->thread->getPostCount();
-        $oldBoard = $this->thread->getBoard();
+    	$thread = $this->getThread();
+        $postsBy = $thread->getPostCount();
+        $oldBoard = $thread->getBoard();
         $oldBoard->increaseCounters(-1, -$postsBy);
         $newBoard->increaseCounters(1, $postsBy);
-        $this->thread->saveVar('thread_board', $newBoard->getID());
+        $thread->saveVar('thread_board', $newBoard->getID());
         return $this->message('msg_thread_moved');
     }
     

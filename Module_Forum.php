@@ -28,10 +28,17 @@ final class Module_Forum extends GDO_Module
 	public function getDependencies(): array
 	{
 		return [
-			'File'
+			'File',
 		];
 	}
-
+	
+	public function getFriendencies(): array
+	{
+		return [
+			'GTranslate',
+		];
+	}
+	
 	public function href_administrate_module(): ?string
 	{
 		return $this->href('Admin');
@@ -80,7 +87,7 @@ final class Module_Forum extends GDO_Module
 	public function getUserSettings(): array
 	{
 		return [
-			GDT_ForumSubscribe::make('forum_subscription')->initialValue(GDT_ForumSubscribe::OWN),
+			GDT_ForumSubscribe::make('forum_subscription')->initialValue(GDT_ForumSubscribe::OWN)->noacl(),
 		];
 	}
 

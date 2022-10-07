@@ -2,7 +2,6 @@
 namespace GDO\Forum\Method;
 
 use GDO\Core\Method;
-use GDO\Core\Website;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDO_ForumBoardSubscribe;
 use GDO\Forum\GDO_ForumThreadSubscribe;
@@ -19,6 +18,11 @@ use GDO\Forum\GDO_ForumThread;
  */
 final class Subscribe extends Method
 {
+	public function getMethodTitle(): string
+	{
+		return t('btn_subscribe');
+	}
+	
 	public function isUserRequired() : bool { return true; }
 	
 	public function isGuestAllowed() : bool { return false; }

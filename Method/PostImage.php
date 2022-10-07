@@ -7,21 +7,28 @@ use GDO\User\GDO_User;
 use GDO\Forum\GDO_ForumPost;
 use GDO\File\Method\GetFile;
 
+/**
+ * Downlad an image for a post.
+ * 
+ * @author gizmore
+ */
 final class PostImage extends Method
 {
     public function isSavingLastUrl() : bool { return false; }
     
-    public function gdoParameters() : array
+    public function getMethodTitle(): string
     {
-        return array(
-            GDT_ForumPost::make('id')->notNull(),
-        );
+    	return t('image');
     }
     
-    /**
-     * @return GDO_ForumPost
-     */
-    public function getPost()
+    public function gdoParameters() : array
+    {
+        return [
+            GDT_ForumPost::make('id')->notNull(),
+        ];
+    }
+    
+    public function getPost() : GDO_ForumPost
     {
         return $this->gdoParameterValue('id');
     }
