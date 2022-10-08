@@ -12,12 +12,12 @@ use GDO\Util\Common;
 use GDO\UI\GDT_Message;
 use GDO\File\GDT_File;
 use GDO\Date\Time;
-use GDO\Core\Website;
 use GDO\Form\GDT_Submit;
 use GDO\Core\GDT_Response;
 use GDO\UI\GDT_CardView;
 use GDO\Forum\GDO_ForumUnread;
 use GDO\Form\GDT_Hidden;
+use GDO\UI\GDT_Redirect;
 
 /**
  * CRUD method for GDO_ForumPost.
@@ -143,7 +143,7 @@ final class CRUDPost extends MethodCrud
         GDT_Hook::callWithIPC('ForumPostCreated', $gdo);
         $this->thread->updateBoardLastPost($gdo);
         $id = $gdo->getID();
-        return Website::redirect(href('Forum', 'Thread', '&post='.$id.'#card-'.$id));
+        return GDT_Redirect::to(href('Forum', 'Thread', '&post='.$id.'#card-'.$id));
     }
     
     public function afterUpdate(GDT_Form $form, GDO $gdo)
@@ -155,7 +155,7 @@ final class CRUDPost extends MethodCrud
         $this->thread->updateBoardLastPost($gdo);
         GDO_ForumUnread::markUnread($gdo);
         GDO_ForumUnread::markRead(GDO_User::current(), $gdo);
-        return Website::redirect(href('Forum', 'Thread', '&post='.$id.'#card-'.$id));
+        return GDT_Redirect::to(href('Forum', 'Thread', '&post='.$id.'#card-'.$id));
     }
     
     public function onSubmit_btn_preview(GDT_Form $form)
