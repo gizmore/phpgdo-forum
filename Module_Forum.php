@@ -81,6 +81,7 @@ final class Module_Forum extends GDO_Module
 			'forum_posts' => [GDT_ACLRelation::ALL, 0, null],
 			'forum_threads' => [GDT_ACLRelation::ALL, 0, null],
 			'forum_readmark' => [GDT_ACLRelation::HIDDEN, 0, null],
+			'forum_subscription' => [GDT_ACLRelation::HIDDEN, 0, null],
 		];
 	}
 	
@@ -106,7 +107,7 @@ final class Module_Forum extends GDO_Module
 		return [
 			GDT_UInt::make('forum_posts')->initial('0'),
 			GDT_UInt::make('forum_threads')->initial('0'),
-			GDT_DateTime::make('forum_readmark')->label('forum_readmark'),
+			GDT_DateTime::make('forum_readmark')->label('forum_readmark')->noacl()->hidden(),
 		];
 	}
 
