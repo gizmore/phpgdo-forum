@@ -75,7 +75,7 @@ final class Module_Forum extends GDO_Module
 	# #############
 	# ## Config ###
 	# #############
-	public function getACLDefaults() : ?array
+	public function getACLDefaults() : array
 	{
 		return [
 			'forum_posts' => [GDT_ACLRelation::ALL, 0, null],
