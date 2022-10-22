@@ -55,7 +55,7 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 	
 	public function getValue()
 	{
-	    if (!$board = parent::getValue())
+	    if (!($board = parent::getValue()))
 	    {
 	        if ($this->defaultRoot)
 	        {

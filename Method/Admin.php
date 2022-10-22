@@ -7,6 +7,13 @@ use GDO\UI\GDT_Bar;
 use GDO\UI\GDT_Page;
 use GDO\UI\GDT_Link;
 
+/**
+ * Forum admin dashboard.
+ * 
+ * @author gizmore
+ * @version 7.0.1
+ * @since 3.2.0
+ */
 final class Admin extends Method
 {
     use MethodAdmin;
@@ -26,7 +33,8 @@ final class Admin extends Method
     public function onRenderTabs() : void
     {
         $this->renderNavBar();
-        GDT_Page::$INSTANCE->topTabs->addField($this->adminTabs());
+        GDT_Page::instance()->topBar()->addField(
+        	$this->adminTabs());
     }
     
     public function execute()
