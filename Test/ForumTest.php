@@ -54,8 +54,8 @@ final class ForumTest extends TestCase
             'thread_title' => 'Test Thread 1',
             'post_message' => '<p>Test Thread Message 1</p>',
         ];
-        GDT_MethodTest::make()->
-        	method(CreateThread::make())->inputs($p)->execute();
+        $me = GDT_MethodTest::make()->method(CreateThread::make())->inputs($p);
+        $me->execute();
         $this->assertOK("Check if CreateThread results in code 200.");
         $threads = GDO_ForumThread::table()->all();
         assertCount(1, $threads, 'Check if we have 1 thread');
