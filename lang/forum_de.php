@@ -105,4 +105,5 @@ The %2$s Team',
 	'err_please_use_subscribe_all' => 'Bitte verwenden Sie den &quot;Alles Abbonieren&quot; Knopf.',
 	# 7.0.1
 	'err_no_image' => 'Dieses Board hat kein Bild.',
+	'err_post_no_attachment' => 'Dieser Post hat keinen Anhang.',
 ];

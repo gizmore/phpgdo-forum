@@ -63,8 +63,7 @@ final class ForumTest extends TestCase
         
         $post = $threads[1]->getFirstPost();
         $message = $post->displayMessage();
-        assertStringContainsString("Thread", $message, 'check if post message is set.');
-        assertStringContainsString("<div", $message, 'check if post message display is output prerendered.');
+        assertStringContainsString("Test Thread Message 1", $message, 'check if post message is set.');
         
         # Look at boards again to make sure we are not in a deadloop.
         GDT_MethodTest::make()->method(Boards::make())->execute();

@@ -45,7 +45,10 @@ final class PostImage extends Method
     public function execute()
     {
         $post = $this->getPost();
-        $attachment = $post->getAttachment();
+        if (!($attachment = $post->getAttachment()))
+        {
+        	return $this->error('err_post_no_attachment');
+        }
         if (!$attachment->isImageType())
         {
             return $this->error('err_no_image');

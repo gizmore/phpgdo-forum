@@ -5,9 +5,7 @@ use GDO\User\GDO_User;
 use GDO\Table\GDT_ListItem;
 use GDO\UI\GDT_Paragraph;
 use GDO\UI\GDT_Button;
-use GDO\UI\GDT_Image;
 use GDO\UI\GDT_Container;
-use GDO\UI\GDT_Headline;
 use GDO\Forum\Module_Forum;
 use GDO\Forum\GDT_ForumSubscribe;
 $user = GDO_User::current();
@@ -47,7 +45,7 @@ $lastThread = $board->getLastThread();
 
 if ($lastThread)
 {
-    $li->subtext(GDT_Paragraph::make()->text('forum_board_last_subtext', [$lastThread->displayTitle()]));
+    $li->footer(GDT_Paragraph::make()->text('forum_board_last_subtext', [$lastThread->displayTitle()]));
 }
 
 # Menu

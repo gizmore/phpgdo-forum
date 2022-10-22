@@ -105,4 +105,5 @@ The %2$s Team',
 	'err_please_use_subscribe_all' => 'Please use the subscribe all button.',
 	# 7.0.1
 	'err_no_image' => 'This board has no image.',
+	'err_post_no_attachment' => 'This post has no attachment.',
 ];

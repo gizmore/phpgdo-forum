@@ -116,4 +116,14 @@ final class CreateThread extends MethodForm
         }
     }
 
+    /**
+     * To test, this method requires to plug a board that allows threads. 
+     */
+    public function plugVars(): array
+    {
+    	return [
+    		['board' => GDO_ForumBoard::table()->select('board_id')->where('board_allow_threads')->first()->exec()->fetchValue()],
+    	];
+    }
+    
 }

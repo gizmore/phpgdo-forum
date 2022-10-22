@@ -23,7 +23,12 @@ final class GDO_ForumThread extends GDO
     ###########
     ### GDO ###
     ###########
-    public function gdoColumns() : array
+	public function isTestable(): bool
+	{
+		return false;
+	}
+	
+	public function gdoColumns() : array
     {
         return [
             GDT_AutoInc::make('thread_id'),
