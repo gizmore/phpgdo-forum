@@ -26,9 +26,9 @@ final class ForumTest extends TestCase
             'board_description' => 'Beschreibung Test Board 2',
             'board_parent' => '1',
             'board_allow_threads' => '1',
-            'create' => 'create',
         ];
-        GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p)->execute();
+        $me = GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p);
+        $me->execute('create');
         $this->assertOK("Check if Forum::CRUDBoard has easy to spot errors.");
         
         $p = [
@@ -36,9 +36,8 @@ final class ForumTest extends TestCase
             'board_description' => 'Beschreibung Test Board 3',
             'board_parent' => '2',
             'board_allow_threads' => '1',
-            'create' => 'create',
         ];
-        GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p)->execute();
+        GDT_MethodTest::make()->method(CRUDBoard::make())->inputs($p)->execute('create');
         $this->assertOK("Check if Forum::CRUDBoard has easy to spot errors.");
         
         assertEquals($count + 2, GDO_ForumBoard::table()->countWhere(), 'Check if 2 forum boards were additionally created.');
