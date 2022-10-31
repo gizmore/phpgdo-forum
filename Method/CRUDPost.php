@@ -47,43 +47,49 @@ final class CRUDPost extends MethodCrud
         Module_Forum::instance()->renderTabs();
     }
     
+    public function onMethodInit()
+    {
+    	# 1. Get thread
+    	$user = GDO_User::current();
+    	if ( ($pid = Common::getRequestString('quote')) ||
+    		($pid = Common::getRequestString('reply')) ||
+    		($pid = Common::getRequestString('id')) )
+    	{
+    		$post = $this->post = GDO_ForumPost::table()->find($pid);
+    		$this->thread = $post->getThread();
+    		if (!$post->canView($user))
+    		{
+    			return $this->error('err_permission_read');
+    		}
+    	}
+    	else
+    	{
+    		return $this->error('err_thread');
+    	}
+    	#
+    	$_REQUEST['board'] = $this->thread->getBoardID();
+    }
+    
+    public function hasPermission(GDO_User $user): bool
+    {
+    	# 2. Check permission
+    	if (!$this->thread->canView($user))
+    	{
+    		return $this->error('err_permission_create');
+    	}
+    	if ($this->thread->isLocked())
+    	{
+    		return $this->error('err_thread_locked');
+    	}
+    	return true;
+    }
+    
     public function execute()
     {
-        # 1. Get thread
-        $user = GDO_User::current();
-        if ( ($pid = Common::getRequestString('quote')) ||
-        	 ($pid = Common::getRequestString('reply')) ||
-             ($pid = Common::getRequestString('id')) )
-        {
-            $post = $this->post = GDO_ForumPost::table()->find($pid);
-            $this->thread = $post->getThread();
-            if (!$post->canView($user))
-            {
-                return $this->error('err_permission_read');
-            }
-        }
-        else
-        {
-            return $this->error('err_thread');
-        }
-        #
-        $_REQUEST['board'] = $this->thread->getBoardID();
-        
-        
-        # 2. Check permission
-        if (!$this->thread->canView($user))
-        {
-            return $this->error('err_permission_create');
-        }
-        if ($this->thread->isLocked())
-        {
-            return $this->error('err_thread_locked');
-        }
-
         # 3. Execute
         $response = parent::execute();
         
-        $card = GDT_CardView::make()->gdo($post);
+        $card = GDT_CardView::make()->gdo($this->post);
         return GDT_Response::makeWith($card)->addField($response);
     }
     
@@ -112,15 +118,15 @@ final class CRUDPost extends MethodCrud
 //             # Prefill post on GET and quote
 //         	$initialPostHTML = $this->initialMessage();
 //         }
-        $form->addFields(array(
+        $form->addFields(
             GDT_Hidden::make('post_thread')->initial($this->thread->getID()),
         	GDT_Message::make('post_message')->initial($initialPostHTML),
-        ));
+        );
         if (Module_Forum::instance()->canUpload(GDO_User::current()))
         {
             $form->addField(GDT_File::make('post_attachment'));
             
-            if ($this->gdo)
+            if (isset($this->gdo))
             {
                 $form->getField('post_attachment')->previewHREF(href('Forum', 'PostImage', "&id={id}"));
             }
