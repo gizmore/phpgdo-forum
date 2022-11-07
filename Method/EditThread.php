@@ -24,6 +24,11 @@ use GDO\UI\GDT_DeleteButton;
  */
 final class EditThread extends MethodForm
 {
+	public function isTrivial(): bool
+	{
+		return false;
+	}
+	
     public function isUserRequired(): bool { return true; }
     public function isGuestAllowed(): bool { return Module_Forum::instance()->cfgGuestPosts(); }
     
