@@ -34,8 +34,8 @@ final class Repair extends MethodForm
     
     public function onRenderTabs() : void
     {
-        $this->renderNavBar();
-        GDT_Page::$INSTANCE->topTabs->addField(
+        $this->renderAdminBar();
+        GDT_Page::$INSTANCE->topResponse()->addField(
             Admin::make()->adminTabs());
     }
     

@@ -32,8 +32,8 @@ final class Admin extends Method
     
     public function onRenderTabs() : void
     {
-        $this->renderNavBar();
-        GDT_Page::instance()->topBar()->addField(
+    	$this->renderAdminBar();
+        GDT_Page::instance()->topResponse()->addField(
         	$this->adminTabs());
     }
     
