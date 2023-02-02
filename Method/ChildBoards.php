@@ -22,7 +22,7 @@ final class ChildBoards extends MethodQueryList
     public function gdoParameters() : array
     {
         return [
-            GDT_ForumBoard::make('board')->defaultRoot(),
+            GDT_ForumBoard::make('id')->defaultRoot(),
         ];
     }
     
@@ -31,7 +31,7 @@ final class ChildBoards extends MethodQueryList
      */
     public function getBoard()
     {
-        return $this->gdoParameterValue('board');
+        return $this->gdoParameterValue('id');
     }
     
     public function getQuery() : Query

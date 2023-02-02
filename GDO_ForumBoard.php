@@ -193,9 +193,9 @@ final class GDO_ForumBoard extends GDO_Tree
 	# ###########
 	# ## HREF ###
 	# ###########
-	public function hrefView()
+	public function hrefView(): string
 	{
-		return href('Forum', 'Boards', '&board=' . $this->getID());
+		return href('Forum', 'Boards', "&id={$this->getID()}");
 	}
 
 	# #################

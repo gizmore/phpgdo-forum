@@ -27,9 +27,9 @@ final class Threads extends MethodQueryList
     
     public function gdoParameters() : array
     {
-        return [
-            GDT_ForumBoard::make('board')->notNull(),
-        ];
+        return array_merge(parent::gdoParameters(), [
+            GDT_ForumBoard::make('id')->notNull(),
+        ]);
     }
     
 //     public function onRenderTabs() : void
@@ -42,7 +42,7 @@ final class Threads extends MethodQueryList
      */
     public function getBoard()
     {
-        return $this->gdoParameterValue('board');
+        return $this->gdoParameterValue('id');
     }
     
     public function gdoTable() : GDO

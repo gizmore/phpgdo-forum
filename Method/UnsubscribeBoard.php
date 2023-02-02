@@ -46,7 +46,7 @@ final class UnsubscribeBoard extends Method
 			"subscribe_user={$user->getID()} AND subscribe_board={$board->getID()}");
 		$user->tempUnset('gdo_forum_board_subsciptions');
 		$user->recache();
-		$href = href('Forum', 'Boards', '&board=' . $board->getParent()->getID());
+		$href = href('Forum', 'Boards', '&id=' . $board->getParent()->getID());
 		$href = GDT_Redirect::hrefBack($href);
 		return $this->redirectMessage('msg_unsubscribed', null, $href);
 	}

@@ -14,7 +14,7 @@ use GDO\User\GDT_Permission;
 final class CRUDBoard extends MethodCrud
 {
     public function gdoTable() : GDO { return GDO_ForumBoard::table(); }
-    public function hrefList() : string { return href('Forum', 'Boards', '&board='.Common::getRequestInt('board')); }
+    public function hrefList() : string { return href('Forum', 'Boards', '&id='.Common::getRequestInt('board')); }
    
     public function canCreate(GDO $gdo) { return GDO_User::current()->isStaff(); }
     public function canUpdate(GDO $gdo) { return GDO_User::current()->isStaff(); }

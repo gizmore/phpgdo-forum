@@ -51,7 +51,7 @@ foreach ($board->getChildren() as $p)
 $boardselect->choices($links);
 $boardselect->initial($lastboard);
 
-$boardselect->attr('onchange', "window.location.href='?mo=Forum&me=Boards&board='+this.value;");
+$boardselect->attr('onchange', "window.location.href='?mo=Forum&me=Boards&id='+this.value;");
 $boardselect->css('flex', '1');
 $bar->addField($boardselect);
 

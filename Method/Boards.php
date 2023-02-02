@@ -19,7 +19,7 @@ final class Boards extends Method
     public function gdoParameters() : array
     {
         return [
-            GDT_ForumBoard::make('board')->notNull()->defaultRoot(),
+            GDT_ForumBoard::make('id')->notNull()->defaultRoot(),
         ];
     }
     
@@ -30,7 +30,7 @@ final class Boards extends Method
     
     public function execute()
     {
-        $board = $this->board = $this->gdoParameterValue('board');
+        $board = $this->board = $this->gdoParameterValue('id');
         
         if ( (!$board) || (!$board->canView(GDO_User::current())) )
         {

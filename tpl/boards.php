@@ -28,5 +28,5 @@ if ($board->allowsThreads())
 # 3. Threads as list
 if ($board->allowsThreads())
 {
-    echo Threads::make()->executeWithInputs(['board' => $board->getID()])->render();
+	echo Threads::make()->executeWithInputs($inputs)->render();
 }

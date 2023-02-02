@@ -23,9 +23,15 @@ final class Thread extends MethodQueryCards
     public function isOrdered() : bool { return false; }
     public function isSearched() { return false; }
     
-    public function getDefaultOrder() : ?string { return 'IFNULL(post_edited, post_created)'; }
+    public function getDefaultOrder() : ?string
+    {
+    	return 'post_created';
+    }
     
-    public function getDefaultIPP() : int { return 10; }
+    public function getDefaultIPP() : int
+    {
+    	return 10;
+    }
     
     public function onRenderTabs() : void
     {
@@ -39,26 +45,17 @@ final class Thread extends MethodQueryCards
         ];
     }
     
-    /**
-     * @return GDO_ForumThread
-     */
-    public function getThread()
+    public function getThread(): GDO_ForumThread
     {
         return $this->getPost()->getThread();
     }
     
-    /**
-     * @return GDO_ForumPost
-     */
-    public function getPost()
+    public function getPost(): GDO_ForumPost
     {
         return $this->gdoParameterValue('post');
     }
     
-    /**
-     * @return GDO_ForumBoard
-     */
-    public function getBoard()
+    public function getBoard(): GDO_ForumBoard
     {
         return $this->getThread()->getBoard();   
     }
@@ -98,17 +95,19 @@ final class Thread extends MethodQueryCards
     public function onMethodInit()
     {
     	parent::onMethodInit();
-        $_REQUEST['board'] = $this->getThread()->getBoardID();
+//         $_REQUEST['id'] = $this->getThread()->getBoardID();
     }
     
     protected function beforeCalculateTable(GDT_Table $table)
     {
-        $o = $this->table->headers->name;
-        if (!isset($_REQUEST[$o]['page']))
+//     	parent::beforeCalculateTable($table);
+//         $o = $this->table->headers->name;
+        if (!isset($this->inputs['page']))
         {
             $defaultPage = $this->table->getPageFor($this->getPost());
-            $_REQUEST[$o]['page'] = "$defaultPage";
-            $this->table->pagemenu->page($defaultPage);
+//             $_REQUEST['page'] = "$defaultPage";
+            $this->addInput('page', $defaultPage);
+//             $this->table->pagemenu->page($defaultPage);
         }
     }
     
