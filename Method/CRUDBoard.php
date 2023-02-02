@@ -40,16 +40,17 @@ final class CRUDBoard extends MethodCrud
         $parentId = $this->gdoParameterVar('board');
         if (isset($this->gdo))
         {
+        	$gdo = $this->gdo;
 	        $boardId = $this->gdo->getID();
 	        $parentId = $parentId ? $parentId : $this->gdo->getParentID();
         }
-        $parentId = $parentId ? $parentId : 1;
+        $parentId = $parentId ? $parentId : '0';
         
         $form->addFields(
             $gdo->gdoColumn('board_title'),
             $gdo->gdoColumn('board_sort'),
             $gdo->gdoColumn('board_description'),
-            GDT_ForumBoard::make('board_parent')->label('parent')->notNull()->initial($parentId)->writeable($boardId != 1),
+            GDT_ForumBoard::make('board_parent')->label('parent')->notNull($parentId!=='0')->initial($parentId)->writeable($boardId != 1),
             GDT_Permission::make('board_permission')->emptyInitial(t('sel_no_permissions')),
             $gdo->gdoColumn('board_allow_threads'),
             $gdo->gdoColumn('board_sticky'),

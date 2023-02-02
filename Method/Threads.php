@@ -32,10 +32,10 @@ final class Threads extends MethodQueryList
         ];
     }
     
-    public function onRenderTabs() : void
-    {
-        Module_Forum::instance()->renderTabs();
-    }
+//     public function onRenderTabs() : void
+//     {
+//         Module_Forum::instance()->renderTabs();
+//     }
     
     /**
      * @return GDO_ForumBoard
