@@ -18,7 +18,7 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 		$this->emptyLabel('no_parent');
 	}
 	
-	public function getChoices()
+	public function getChoices(): array
 	{
 	    if ($this->noChoices)
 	    {
