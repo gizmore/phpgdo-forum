@@ -5,6 +5,7 @@ use GDO\Core\GDO;
 use GDO\Core\GDT_Virtual;
 use GDO\DB\Query;
 use GDO\User\GDO_User;
+use GDO\DB\Database;
 
 /**
  * Virtual board column.
@@ -53,7 +54,9 @@ final class GDT_ForumBoardThreadcount extends GDT_Virtual
     public function gdoBeforeRead(GDO $gdo, Query $query) : void
     {
         $user = GDO_User::current();
-        $subquery = "( SELECT CONCAT(IFNULL(COUNT(*), 0), ',', IFNULL(SUM(thread_postcount), 0)) ".
+        $dbms = Database::$DBMS;
+        $conc = $dbms->dbmsConcat('IFNULL(COUNT(*), 0)', "','", 'IFNULL(SUM(thread_postcount), 0)');
+        $subquery = "( SELECT {$conc} ".
             "FROM gdo_forumthread AS ft ".
             "JOIN gdo_forumboard AS fb ON ft.thread_board = fb.board_id ".
             "WHERE ( fb.board_permission IS NULL OR ( ".
