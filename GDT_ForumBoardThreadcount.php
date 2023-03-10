@@ -54,7 +54,7 @@ final class GDT_ForumBoardThreadcount extends GDT_Virtual
     public function gdoBeforeRead(GDO $gdo, Query $query) : void
     {
         $user = GDO_User::current();
-        $dbms = Database::$DBMS;
+        $dbms = Database::DBMS();
         $conc = $dbms->dbmsConcat('IFNULL(COUNT(*), 0)', "','", 'IFNULL(SUM(thread_postcount), 0)');
         $subquery = "( SELECT {$conc} ".
             "FROM gdo_forumthread AS ft ".
