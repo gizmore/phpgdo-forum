@@ -35,7 +35,7 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 	public function defaultRoot(bool $defaultRoot = true)
 	{
 	    $this->defaultRoot = $defaultRoot;
-	    return $this->notNull();
+	    return $this->initialValue(Module_Forum::instance()->cfgRoot());
 	}
 	
 	##################
@@ -53,17 +53,17 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 		return $this->getValue();
 	}
 	
-	public function getValue()
-	{
-	    if (!($board = parent::getValue()))
-	    {
-	        if ($this->defaultRoot)
-	        {
-	            $board = Module_Forum::instance()->cfgRoot();
-	        }
-	    }
-	    return $board;
-	}
+// 	public function getValue()
+// 	{
+// 	    if (!($board = parent::getValue()))
+// 	    {
+// 	        if ($this->defaultRoot)
+// 	        {
+// 	            $board = ;
+// 	        }
+// 	    }
+// 	    return $board;
+// 	}
 	
 	public function withCompletion()
 	{

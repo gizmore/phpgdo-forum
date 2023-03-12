@@ -35,6 +35,7 @@ final class Module_Forum extends GDO_Module
 	public function getFriendencies(): array
 	{
 		return [
+			'Avatar',
 			'GTranslate',
 		];
 	}
@@ -163,7 +164,7 @@ final class Module_Forum extends GDO_Module
 		return $this->getConfigVar('forum_root');
 	}
 
-	public function cfgRoot()
+	public function cfgRoot(): GDO_ForumBoard
 	{
 		return $this->getConfigValue('forum_root');
 	}

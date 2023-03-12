@@ -19,7 +19,7 @@ final class Boards extends Method
     public function gdoParameters() : array
     {
         return [
-            GDT_ForumBoard::make('id')->notNull()->defaultRoot(),
+            GDT_ForumBoard::make('id')->defaultRoot(),
         ];
     }
     
