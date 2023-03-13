@@ -1,4 +1,6 @@
-<?php /** @var $thread \GDO\Forum\GDO_ForumThread **/
+<?php
+namespace GDO\Forum\tpl;
+/** @var $thread \GDO\Forum\GDO_ForumThread **/
 use GDO\Forum\GDO_ForumPost;
 use GDO\Table\GDT_List;
 use GDO\Table\GDT_PageMenu;

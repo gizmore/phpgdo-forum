@@ -2,7 +2,6 @@
 namespace GDO\Forum\Method;
 
 use GDO\Core\Method;
-use GDO\Core\Website;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\GDO_ForumThreadSubscribe;
 use GDO\User\GDO_User;

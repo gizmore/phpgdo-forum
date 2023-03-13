@@ -193,8 +193,11 @@ final class Repair extends MethodForm
     private function repairLastPostInForum()
     {
         $module = Module_Forum::instance();
-        $module->saveConfigVar('forum_latest_post_date', $this->getLastPost()->getCreated());
-        $module->saveConfigVar('forum_mail_sent_for_post', $this->getLastPost()->getID());
+        if ($post = $this->getLastPost())
+        {
+	        $module->saveConfigVar('forum_latest_post_date', $post->getCreated());
+	        $module->saveConfigVar('forum_mail_sent_for_post', $post->getID());
+        }
     }
     
     /**

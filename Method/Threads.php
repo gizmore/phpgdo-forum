@@ -7,7 +7,6 @@ use GDO\DB\Query;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\GDT_ForumBoard;
 use GDO\Forum\GDO_ForumBoard;
-use GDO\Forum\Module_Forum;
 use GDO\Table\GDT_Table;
 
 /**
@@ -17,6 +16,7 @@ use GDO\Table\GDT_Table;
  */
 final class Threads extends MethodQueryList
 {
+	
     public function getHeaderName() { return 't'; }
     
     public function isOrdered() : bool { return false; }
@@ -31,11 +31,6 @@ final class Threads extends MethodQueryList
             GDT_ForumBoard::make('id')->notNull(),
         ]);
     }
-    
-//     public function onRenderTabs() : void
-//     {
-//         Module_Forum::instance()->renderTabs();
-//     }
     
     /**
      * @return GDO_ForumBoard
@@ -64,4 +59,5 @@ final class Threads extends MethodQueryList
         $table->title('forum_board_threads', [
             $board->renderName(), $table->countItems()]);
     }
+    
 }

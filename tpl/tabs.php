@@ -1,4 +1,5 @@
 <?php
+namespace GDO\Forum\tpl;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\UI\GDT_Button;
 use GDO\User\GDO_User;
