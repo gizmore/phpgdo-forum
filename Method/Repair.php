@@ -72,9 +72,10 @@ final class Repair extends MethodForm
      */
     public function repair(GDT_Form $form)
     {
-        set_time_limit(60*30); # 0.5h should be plenty- 
-        
-        if ($form->getFormValue('repair_empty_threads'))
+		set_time_limit(60*60);
+		ini_set('memory_limit', '512M');
+
+		if ($form->getFormValue('repair_empty_threads'))
         {
             $this->repairEmptyThreads();
         }
