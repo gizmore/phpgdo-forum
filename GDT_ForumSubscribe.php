@@ -16,7 +16,7 @@ final class GDT_ForumSubscribe extends GDT_Enum
     const OWN = 'fsub_own';
     const ALL = 'fsub_all';
     
-    public function defaultLabel() : self { return $this->label('forum_subscription_mode'); }
+    public function defaultLabel(): static { return $this->label('forum_subscription_mode'); }
     
     protected function __construct()
     {

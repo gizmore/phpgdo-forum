@@ -9,7 +9,7 @@ use GDO\Core\GDT_Object;
  */
 final class GDT_ForumPost extends GDT_Object
 {
-	public function defaultLabel() : self { return $this->label('post'); }
+	public function defaultLabel(): static { return $this->label('post'); }
 	
 	protected function __construct()
 	{

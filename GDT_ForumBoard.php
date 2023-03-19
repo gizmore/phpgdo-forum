@@ -9,7 +9,7 @@ use GDO\Core\GDT_ObjectSelect;
  */
 final class GDT_ForumBoard extends GDT_ObjectSelect
 {
-	public function defaultLabel() : self { return $this->label('board'); }
+	public function defaultLabel(): static { return $this->label('board'); }
 	
 	protected function __construct()
 	{

@@ -12,7 +12,7 @@ use GDO\User\GDO_User;
  */
 final class GDT_ForumThread extends GDT_ObjectSelect
 {
-	public function defaultLabel() : self
+	public function defaultLabel(): static
 	{
 		return $this->label('thread');
 	}
@@ -32,7 +32,7 @@ final class GDT_ForumThread extends GDT_ObjectSelect
 	### Edit permissions ###
 	########################
 	public bool $withEditPermissions = false;
-	public function withEditPermissions(bool $withEditPermissions = true): self
+	public function withEditPermissions(bool $withEditPermissions = true): static
 	{
 		$this->withEditPermissions = false;
 		return $this;

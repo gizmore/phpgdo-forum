@@ -38,7 +38,7 @@ final class GDT_ForumBoardThreadcount extends GDT_Virtual
         return $this->countValue[1];
     }
     
-    public function var(string $var = null) : self
+    public function var(string $var = null): static
     {
         if ($var !== null)
         {
