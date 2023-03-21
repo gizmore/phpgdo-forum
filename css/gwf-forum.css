@@ -1,13 +1,12 @@
 .gdo-forum-unread {
-	background: lightyellow!important;
+    background: lightyellow !important;
 }
 
 .gdo-forum-subscribed .icon-email {
-	color: green!important;
+    color: green !important;
 }
 
 .gdo-forum-post-locked {
-	opacity: 0.6;
-	background: #fee!important;
+    opacity: 0.6;
+    background: #fee !important;
 }
-

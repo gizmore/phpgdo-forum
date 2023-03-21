@@ -3,19 +3,19 @@ namespace GDO\Forum;
 
 use GDO\Core\GDO;
 use GDO\Core\GDT_AutoInc;
+use GDO\Core\GDT_Checkbox;
 use GDO\Core\GDT_CreatedAt;
 use GDO\Core\GDT_CreatedBy;
 use GDO\Core\GDT_EditedAt;
 use GDO\Core\GDT_EditedBy;
 use GDO\Core\GDT_Object;
+use GDO\Core\GDT_Template;
 use GDO\File\GDO_File;
 use GDO\File\GDT_File;
-use GDO\Core\GDT_Template;
 use GDO\UI\GDT_Message;
 use GDO\User\GDO_User;
-use GDO\Votes\WithLikes;
 use GDO\Votes\GDT_LikeCount;
-use GDO\Core\GDT_Checkbox;
+use GDO\Votes\WithLikes;
 
 /**
  * A forum post.
@@ -24,6 +24,7 @@ use GDO\Core\GDT_Checkbox;
  */
 final class GDO_ForumPost extends GDO
 {
+
 	# ############
 	# ## Likes ###
 	# ############
@@ -42,15 +43,48 @@ final class GDO_ForumPost extends GDO
 	# ##########
 	# ## GDO ###
 	# ##########
+
+	public function canView(GDO_User $user)
+	{
+		return $this->getThread()->canView($user);
+	}
+
+	// public function gdoCached() { return false; }
+
+	/**
+	 *
+	 * @return GDO_ForumThread
+	 */
+	public function getThread()
+	{
+		return $this->gdoValue('post_thread');
+	}
+
+	# #################
+	# ## Permission ###
+	# #################
+
+	/**
+	 *
+	 * @return GDO_User
+	 */
+	public function getCreator()
+	{
+		return $this->gdoValue('post_creator');
+	}
+
 	public function isTestable(): bool
 	{
 		return false;
 	}
 
-	// public function gdoCached() { return false; }
+	# #############
+	# ## Getter ###
+	# #############
+
 	public function gdoColumns(): array
 	{
-		return array(
+		return [
 			GDT_AutoInc::make('post_id'),
 			GDT_Object::make('post_thread')->table(GDO_ForumThread::table())->notNull(),
 			GDT_LikeCount::make('post_likes'),
@@ -63,36 +97,28 @@ final class GDO_ForumPost extends GDO
 			GDT_CreatedBy::make('post_creator'),
 			GDT_EditedAt::make('post_edited'),
 			GDT_EditedBy::make('post_editor'),
-		);
+		];
 	}
 
-	# #################
-	# ## Permission ###
-	# #################
+	public function renderCard(): string
+	{
+		return GDT_Template::php('Forum', 'card/post.php', [
+			'post' => $this,
+		]);
+	}
+
 	public function canEdit(GDO_User $user)
 	{
-		if ( !$this->canView($user))
+		if (!$this->canView($user))
 		{
 			return false;
 		}
 		return $user->isStaff() || ($user->getID() === $this->getCreatorID());
 	}
 
-	public function canView(GDO_User $user)
+	public function getCreatorID()
 	{
-		return $this->getThread()->canView($user);
-	}
-
-	# #############
-	# ## Getter ###
-	# #############
-	/**
-	 *
-	 * @return GDO_ForumThread
-	 */
-	public function getThread()
-	{
-		return $this->gdoValue('post_thread');
+		return $this->gdoVar('post_creator');
 	}
 
 	public function getThreadID()
@@ -107,7 +133,7 @@ final class GDO_ForumPost extends GDO
 
 	public function isEdited()
 	{
-		return ! !$this->getEdited();
+		return !!$this->getEdited();
 	}
 
 	public function getEdited()
@@ -131,7 +157,7 @@ final class GDO_ForumPost extends GDO
 
 	public function getAttachment(): ?GDO_File
 	{
-		/** @var $file GDO_File **/
+		/** @var $file GDO_File * */
 		$file = $this->gdoValue('post_attachment');
 		if ($file && $file->isImageType())
 		{
@@ -140,38 +166,14 @@ final class GDO_ForumPost extends GDO
 		return $file;
 	}
 
-	public function getAttachmentID()
-	{
-		return $this->gdoVar('post_attachment');
-	}
-
 	public function hasAttachment()
 	{
 		return $this->getAttachmentID() !== null;
 	}
 
-	public function getCreated()
+	public function getAttachmentID()
 	{
-		return $this->gdoVar('post_created');
-	}
-
-	public function getLevel()
-	{
-		return $this->gdoVar('post_level');
-	}
-
-	/**
-	 *
-	 * @return GDO_User
-	 */
-	public function getCreator()
-	{
-		return $this->gdoValue('post_creator');
-	}
-
-	public function getCreatorID()
-	{
-		return $this->gdoVar('post_creator');
+		return $this->gdoVar('post_attachment');
 	}
 
 	public function hrefEdit()
@@ -189,14 +191,14 @@ final class GDO_ForumPost extends GDO
 		return href('Forum', 'CRUDPost', '&quote=' . $this->getID());
 	}
 
-	public function hrefAttachment()
-	{
-		return href('Forum', 'DownloadAttachment', '&post=' . $this->getID());
-	}
-
 	public function hrefPreview()
 	{
 		return $this->hrefAttachment() . '&att={id}';
+	}
+
+	public function hrefAttachment()
+	{
+		return href('Forum', 'DownloadAttachment', '&post=' . $this->getID());
 	}
 
 	public function href_preview()
@@ -204,17 +206,18 @@ final class GDO_ForumPost extends GDO
 		return urldecode($_SERVER['REQUEST_URI']);
 	}
 
-	# #############
-	# ## Render ###
-	# #############
-	public function signatureField()
-	{
-		return Module_Forum::instance()->userSetting($this->getCreator(), 'signature');
-	}
-
 	public function hasSignature()
 	{
 		return !empty($this->signatureField()->var);
+	}
+
+	# #############
+	# ## Render ###
+	# #############
+
+	public function signatureField()
+	{
+		return Module_Forum::instance()->userSetting($this->getCreator(), 'signature');
 	}
 
 	public function displaySignature()
@@ -227,11 +230,20 @@ final class GDO_ForumPost extends GDO
 		return tt($this->getCreated());
 	}
 
-	public function renderCard(): string
+	public function getCreated()
 	{
-		return GDT_Template::php('Forum', 'card/post.php', [
-			'post' => $this
-		]);
+		return $this->gdoVar('post_created');
+	}
+
+	public function displayMessage()
+	{
+		if (!$this->canRead())
+		{
+			return t('hidden_post_level', [
+				$this->getLevel(),
+			]);
+		}
+		return $this->gdoColumn('post_message')->render();
 	}
 
 	public function canRead()
@@ -239,20 +251,15 @@ final class GDO_ForumPost extends GDO
 		return GDO_User::current()->getLevel() >= $this->getLevel();
 	}
 
-	public function displayMessage()
+	public function getLevel()
 	{
-		if ( !$this->canRead())
-		{
-			return t('hidden_post_level', [
-				$this->getLevel()
-			]);
-		}
-		return $this->gdoColumn('post_message')->render();
+		return $this->gdoVar('post_level');
 	}
 
 	# #############
 	# ## Unread ###
 	# #############
+
 	public function isUnread(GDO_User $user)
 	{
 		return GDO_ForumUnread::isPostUnread($user, $this);

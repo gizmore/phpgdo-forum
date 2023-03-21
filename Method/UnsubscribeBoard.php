@@ -4,15 +4,15 @@ namespace GDO\Forum\Method;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDO_ForumBoardSubscribe;
-use GDO\User\GDO_User;
 use GDO\Forum\GDT_ForumBoard;
 use GDO\UI\GDT_Redirect;
+use GDO\User\GDO_User;
 
 /**
  * Unsubscribe from a board.
  *
- * @author gizmore
  * @version 7.0.1
+ * @author gizmore
  */
 final class UnsubscribeBoard extends Method
 {
@@ -27,11 +27,6 @@ final class UnsubscribeBoard extends Method
 		return [
 			GDT_ForumBoard::make('board')->notNull(),
 		];
-	}
-
-	public function getBoard(): GDO_ForumBoard
-	{
-		return $this->gdoParameterValue('board');
 	}
 
 	public function execute()
@@ -49,6 +44,11 @@ final class UnsubscribeBoard extends Method
 		$href = href('Forum', 'Boards', '&id=' . $board->getParent()->getID());
 		$href = GDT_Redirect::hrefBack($href);
 		return $this->redirectMessage('msg_unsubscribed', null, $href);
+	}
+
+	public function getBoard(): GDO_ForumBoard
+	{
+		return $this->gdoParameterValue('board');
 	}
 
 }

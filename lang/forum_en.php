@@ -1,5 +1,6 @@
 <?php
 namespace GDO\Forum\lang;
+
 return [
 	'link_forum' => '%s Posts',
 	'gdo_forumpost' => 'Post',

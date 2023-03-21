@@ -4,15 +4,15 @@ namespace GDO\Forum\Method;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\GDO_ForumThreadSubscribe;
-use GDO\User\GDO_User;
 use GDO\Forum\GDT_ForumThread;
 use GDO\UI\GDT_Redirect;
+use GDO\User\GDO_User;
 
 /**
  * Unsubscribe from a thread.
  *
- * @author gizmore
  * @version 7.0.1
+ * @author gizmore
  */
 final class UnsubscribeThread extends Method
 {
@@ -29,11 +29,6 @@ final class UnsubscribeThread extends Method
 		];
 	}
 
-	public function getThread(): GDO_ForumThread
-	{
-		return $this->gdoParameterValue('thread');
-	}
-
 	public function execute()
 	{
 		$user = GDO_User::current();
@@ -45,6 +40,11 @@ final class UnsubscribeThread extends Method
 		$href = href('Forum', 'Boards', '&boardid=' . $thread->getBoard()->getID());
 		$href = GDT_Redirect::hrefBack($href);
 		return $this->redirectMessage('msg_unsubscribed', null, $href);
+	}
+
+	public function getThread(): GDO_ForumThread
+	{
+		return $this->gdoParameterValue('thread');
 	}
 
 }

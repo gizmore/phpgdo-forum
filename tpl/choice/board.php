@@ -1,3 +1,6 @@
 <?php
-/** @var $board \GDO\Forum\GDO_ForumBoard **/
+/** @var $board GDO_ForumBoard * */
+
+use GDO\Forum\GDO_ForumBoard;
+
 echo $board->renderName();

@@ -2,28 +2,30 @@
 namespace GDO\Forum;
 
 use GDO\Core\GDO_Module;
-use GDO\DB\Cache;
-use GDO\Date\GDT_DateTime;
-use GDO\UI\GDT_Link;
 use GDO\Core\GDT_Checkbox;
-use GDO\UI\GDT_Message;
-use GDO\User\GDT_Level;
-use GDO\User\GDO_User;
-use GDO\Core\GDT_UInt;
-use GDO\UI\GDT_Page;
 use GDO\Core\GDT_Template;
+use GDO\Core\GDT_UInt;
+use GDO\Date\GDT_DateTime;
+use GDO\DB\Cache;
+use GDO\UI\GDT_Link;
+use GDO\UI\GDT_Message;
+use GDO\UI\GDT_Page;
 use GDO\User\GDO_Permission;
+use GDO\User\GDO_User;
 use GDO\User\GDT_ACLRelation;
+use GDO\User\GDT_Level;
 
 /**
  * GDO Forum Module.
  *
- * @author gizmore
  * @version 7.0.1
  * @since 2.0.0
+ * @author gizmore
  */
 final class Module_Forum extends GDO_Module
 {
+
+	public int $priority = 45;
 
 	public function getDependencies(): array
 	{
@@ -31,7 +33,7 @@ final class Module_Forum extends GDO_Module
 			'File',
 		];
 	}
-	
+
 	public function getFriendencies(): array
 	{
 		return [
@@ -39,16 +41,15 @@ final class Module_Forum extends GDO_Module
 			'GTranslate',
 		];
 	}
-	
-	public function href_administrate_module(): ?string
-	{
-		return $this->href('Admin');
-	}
 
 	# #############
 	# ## Module ###
 	# #############
-	public int $priority = 45;
+
+	public function href_administrate_module(): ?string
+	{
+		return $this->href('Admin');
+	}
 
 	public function getClasses(): array
 	{
@@ -76,7 +77,7 @@ final class Module_Forum extends GDO_Module
 	# #############
 	# ## Config ###
 	# #############
-	public function getACLDefaults() : array
+	public function getACLDefaults(): array
 	{
 		return [
 			'forum_posts' => [GDT_ACLRelation::ALL, 0, null],
@@ -85,7 +86,7 @@ final class Module_Forum extends GDO_Module
 			'forum_subscription' => [GDT_ACLRelation::HIDDEN, 0, null],
 		];
 	}
-	
+
 	public function getUserSettings(): array
 	{
 		return [
@@ -129,19 +130,68 @@ final class Module_Forum extends GDO_Module
 		];
 	}
 
+	/**
+	 * Create a root board element on install.
+	 */
+	public function onInstall(): void
+	{
+		if (!$this->cfgRootID())
+		{
+			$root = GDO_ForumBoard::blank(
+				[
+					'board_title' => 'GDOv6 Forum',
+					'board_description' => 'Welcome to the GDOv6 Forum Module',
+				])->insert();
+			$this->saveConfigVar('forum_root', $root->getID());
+		}
+	}
+
+	public function cfgRootID()
+	{
+		return $this->getConfigVar('forum_root');
+	}
+
+	public function onWipe(): void
+	{
+		Cache::flush();
+	}
+
+	public function onInitSidebar(): void
+	{
+		if ($this->cfgHookLeftBar())
+		{
+			$user = GDO_User::current();
+			if ($root = $this->cfgRoot())
+			{
+				$posts = $root->getUserPostCount();
+				$link = GDT_Link::make()->text('link_forum', [
+					$posts,
+				])->href(href('Forum', 'Boards'))->icon('book');
+				if ($user->isAuthenticated())
+				{
+					if (GDO_ForumUnread::countUnread($user) > 0)
+					{
+						$link->icon('alert');
+					}
+				}
+				GDT_Page::instance()->leftBar()->addField($link);
+			}
+		}
+	}
+
+	public function cfgHookLeftBar()
+	{
+		return $this->getConfigValue('hook_sidebar');
+	}
+
+	public function cfgRoot(): GDO_ForumBoard
+	{
+		return $this->getConfigValue('forum_root');
+	}
+
 	public function cfgGuestPosts()
 	{
 		return $this->getConfigValue('forum_guest_posts');
-	}
-
-	public function cfgAttachments()
-	{
-		return $this->getConfigValue('forum_attachments');
-	}
-
-	public function cfgAttachmentLevel()
-	{
-		return $this->getConfigValue('forum_attachment_level');
 	}
 
 	public function cfgPostLevel()
@@ -159,24 +209,9 @@ final class Module_Forum extends GDO_Module
 		return $this->getConfigVar('forum_mail_sent_for_post');
 	}
 
-	public function cfgRootID()
-	{
-		return $this->getConfigVar('forum_root');
-	}
-
-	public function cfgRoot(): GDO_ForumBoard
-	{
-		return $this->getConfigValue('forum_root');
-	}
-
 	public function cfgNumLatestThreads()
 	{
 		return $this->getConfigVar('forum_num_latest');
-	}
-
-	public function cfgHookLeftBar()
-	{
-		return $this->getConfigValue('hook_sidebar');
 	}
 
 	public function cfgMailEnabled()
@@ -184,46 +219,38 @@ final class Module_Forum extends GDO_Module
 		return $this->getConfigValue('forum_mail_enable');
 	}
 
+	# ##################
+	# ## Permissions ###
+	# ##################
+
 	public function cfgThreadsPerPage()
 	{
 		return $this->getConfigValue('forum_threads_per_page');
 	}
 
-	# ##################
-	# ## Permissions ###
-	# ##################
+	# ##############
+	# ## Install ###
+	# ##############
+
 	public function canUpload(GDO_User $user)
 	{
 		return $this->cfgAttachments() && ($user->getLevel() >= $this->cfgAttachmentLevel());
 	}
 
-	# ##############
-	# ## Install ###
-	# ##############
-	/**
-	 * Create a root board element on install.
-	 */
-	public function onInstall(): void
+	public function cfgAttachments()
 	{
-		if ( !$this->cfgRootID())
-		{
-			$root = GDO_ForumBoard::blank(
-				[
-					'board_title' => 'GDOv6 Forum',
-					'board_description' => 'Welcome to the GDOv6 Forum Module'
-				])->insert();
-			$this->saveConfigVar('forum_root', $root->getID());
-		}
-	}
-
-	public function onWipe(): void
-	{
-		Cache::flush();
+		return $this->getConfigValue('forum_attachments');
 	}
 
 	# ############
 	# ## Hooks ###
 	# ############
+
+	public function cfgAttachmentLevel()
+	{
+		return $this->getConfigValue('forum_attachment_level');
+	}
+
 	public function hookForumPostCreated(GDO_ForumPost $post)
 	{
 		$post->getThread()
@@ -231,6 +258,10 @@ final class Module_Forum extends GDO_Module
 			->recache();
 		Cache::flush();
 	}
+
+	# #############
+	# ## Render ###
+	# #############
 
 	/**
 	 * On granting a permission,
@@ -244,35 +275,9 @@ final class Module_Forum extends GDO_Module
 		GDO_ForumUnread::markUnreadForPermission($user, $permission);
 	}
 
-	# #############
-	# ## Render ###
-	# #############
 	public function renderTabs()
 	{
 		GDT_Page::instance()->topResponse()->addField(GDT_Template::make()->template('Forum', 'tabs.php'));
-	}
-
-	public function onInitSidebar(): void
-	{
-		if ($this->cfgHookLeftBar())
-		{
-			$user = GDO_User::current();
-			if ($root = $this->cfgRoot())
-			{
-				$posts = $root->getUserPostCount();
-				$link = GDT_Link::make()->text('link_forum', [
-					$posts
-				])->href(href('Forum', 'Boards'))->icon('book');
-				if ($user->isAuthenticated())
-				{
-					if (GDO_ForumUnread::countUnread($user) > 0)
-					{
-						$link->icon('alert');
-					}
-				}
-				GDT_Page::instance()->leftBar()->addField($link);
-			}
-		}
 	}
 
 }

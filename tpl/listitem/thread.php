@@ -1,14 +1,15 @@
 <?php
 namespace GDO\Forum\tpl\listitem;
 
-/** @var $thread \GDO\Forum\GDO_ForumThread **/
+/** @var $thread GDO_ForumThread * */
 
-use GDO\User\GDO_User;
-use GDO\UI\GDT_Link;
+use GDO\Forum\GDO_ForumThread;
+use GDO\Forum\GDT_ForumSubscribe;
+use GDO\Forum\Module_Forum;
 use GDO\Table\GDT_ListItem;
 use GDO\UI\GDT_Button;
-use GDO\Forum\Module_Forum;
-use GDO\Forum\GDT_ForumSubscribe;
+use GDO\UI\GDT_Link;
+use GDO\User\GDO_User;
 
 $lastPoster = $thread->getLastPoster();
 $postcount = $thread->getPostCount();
@@ -33,17 +34,17 @@ if ($replycount)
 {
 	$linkLastReply = GDT_Link::anchor($thread->hrefLastPost(), $thread->displayLastPosted());
 	$li->subtitle('li_thread_replies', [
-		$thread->getPostCount()-1,
+		$thread->getPostCount() - 1,
 		$lastPoster->renderUserName(),
 		$linkLastReply]);
 }
-else 
+else
 {
 	$li->subtitle('li_thread_no_replies');
 }
 
 # Actions
-$href = $subscribed ? href('Forum', 'UnsubscribeThread', '&thread='.$tid) : href('Forum', 'Subscribe', '&thread='.$tid);
+$href = $subscribed ? href('Forum', 'UnsubscribeThread', '&thread=' . $tid) : href('Forum', 'Subscribe', '&thread=' . $tid);
 $li->actions()->addFields(
 	GDT_Button::make('first_post')->href($thread->hrefFirstPost())->icon('view')->label('btn_view_first_post'),
 	GDT_Button::make('last_post')->href($thread->hrefLastPost())->icon('view')->label('btn_view_last_post'),
@@ -51,9 +52,9 @@ $li->actions()->addFields(
 
 if (GDT_ForumSubscribe::ALL !== Module_Forum::instance()->userSettingVar($user, 'forum_subscription'))
 {
-    $li->actions()->addField(
-        GDT_Button::make()->href($href)->icon('email')->label($subscribeLabel)->addClass($subscribeClass)
-    );
+	$li->actions()->addField(
+		GDT_Button::make()->href($href)->icon('email')->label($subscribeLabel)->addClass($subscribeClass)
+	);
 }
 
 echo $li->render();

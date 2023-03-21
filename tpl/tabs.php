@@ -1,14 +1,15 @@
 <?php
 namespace GDO\Forum\tpl;
-use GDO\Forum\GDO_ForumBoard;
-use GDO\UI\GDT_Button;
-use GDO\User\GDO_User;
-use GDO\Util\Common;
+
 use GDO\Core\GDT_Select;
-use GDO\Util\Arrays;
-use GDO\UI\GDT_Menu;
+use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDO_ForumUnread;
 use GDO\Forum\Module_Forum;
+use GDO\UI\GDT_Button;
+use GDO\UI\GDT_Menu;
+use GDO\User\GDO_User;
+use GDO\Util\Arrays;
+use GDO\Util\Common;
 
 $bar = GDT_Menu::make()->label('actions');
 $user = GDO_User::current();
@@ -21,10 +22,10 @@ $bar->addField(GDT_Button::make()->icon('settings')->label('link_settings')->hre
 # Header Create Board Button
 if ($user->isStaff())
 {
-    $bar->addField(GDT_Button::make()->label('board')->icon('add')->href(href('Forum', 'CRUDBoard', '&board='.$board->getID())));
+	$bar->addField(GDT_Button::make()->label('board')->icon('add')->href(href('Forum', 'CRUDBoard', '&board=' . $board->getID())));
 }
 
-$bar->addField(GDT_Button::make()->label('search')->icon('search')->tooltip(t('tt_search_forum'))->href(href('Forum', 'Search', '&board='.$board->getID())));
+$bar->addField(GDT_Button::make()->label('search')->icon('search')->tooltip(t('tt_search_forum'))->href(href('Forum', 'Search', '&board=' . $board->getID())));
 
 
 # Header Middle Board Selection
@@ -42,12 +43,12 @@ while ($p)
 	{
 		$lastboard = $p->getID();
 	}
-    $p = $p->getParent();
+	$p = $p->getParent();
 }
 $links = Arrays::reverse($links);
 foreach ($board->getChildren() as $p)
 {
-    $links[$p->getID()] = str_repeat('+', $p->getDepth()) . $p->renderName();
+	$links[$p->getID()] = str_repeat('+', $p->getDepth()) . $p->renderName();
 }
 $boardselect->choices($links);
 $boardselect->initial($lastboard);
@@ -59,14 +60,14 @@ $bar->addField($boardselect);
 # Header Edit button. Either edit board or thread
 if ($user->isStaff())
 {
-    if (isset($_REQUEST['thread']))
-    {
-        $bar->addField(GDT_Button::make()->label('thread')->icon('edit')->href(href('Forum', 'EditThread', '&id='.Common::getRequestString('thread'))));
-    }
-    else
-    {
-        $bar->addField(GDT_Button::make()->label('board')->icon('edit')->href(href('Forum', 'CRUDBoard', '&id='.$board->getID())));
-    }
+	if (isset($_REQUEST['thread']))
+	{
+		$bar->addField(GDT_Button::make()->label('thread')->icon('edit')->href(href('Forum', 'EditThread', '&id=' . Common::getRequestString('thread'))));
+	}
+	else
+	{
+		$bar->addField(GDT_Button::make()->label('board')->icon('edit')->href(href('Forum', 'CRUDBoard', '&id=' . $board->getID())));
+	}
 }
 
 # Unread

@@ -2,21 +2,21 @@
 namespace GDO\Forum;
 
 use GDO\Category\GDO_Tree;
+use GDO\Core\GDO;
 use GDO\Core\GDT_AutoInc;
+use GDO\Core\GDT_Checkbox;
 use GDO\Core\GDT_CreatedAt;
 use GDO\Core\GDT_CreatedBy;
-use GDO\Core\GDT_Template;
-use GDO\Core\GDT_Checkbox;
 use GDO\Core\GDT_String;
-use GDO\User\GDT_Permission;
-use GDO\User\GDO_User;
-use GDO\UI\GDT_Title;
-use GDO\File\GDT_ImageFile;
+use GDO\Core\GDT_Template;
+use GDO\Core\GDT_UInt;
 use GDO\File\GDO_File;
+use GDO\File\GDT_ImageFile;
 use GDO\Table\GDT_PageMenu;
 use GDO\Table\GDT_Sort;
-use GDO\Core\GDO;
-use GDO\Core\GDT_UInt;
+use GDO\UI\GDT_Title;
+use GDO\User\GDO_User;
+use GDO\User\GDT_Permission;
 
 /**
  * A board inherits from GDO_Tree.
@@ -32,14 +32,7 @@ final class GDO_ForumBoard extends GDO_Tree
 	public static $BUILD_TREE_UPON_SAVE = true;
 
 	# set to false for faster board creation during import.
-	public function isTestable(): bool
-	{
-		return false;
-	}
 
-	# ###########
-	# ## Root ###
-	# ###########
 	/**
 	 *
 	 * @return self
@@ -50,8 +43,18 @@ final class GDO_ForumBoard extends GDO_Tree
 	}
 
 	# ###########
+	# ## Root ###
+	# ###########
+
+	public function isTestable(): bool
+	{
+		return false;
+	}
+
+	# ###########
 	# ## Tree ###
 	# ###########
+
 	public function gdoTreePrefix()
 	{
 		return 'board';
@@ -88,8 +91,8 @@ final class GDO_ForumBoard extends GDO_Tree
 				GDT_Checkbox::make('board_allow_guests')->initial('0'),
 				GDT_Checkbox::make('board_sticky')->initial('0'),
 				GDT_ForumBoardThreadcount::make('board_user_count_')->gdtType(GDT_UInt::make()), # thread- and postcount via an
-				                                                                                  # ugly hack @see
-				                                                                                  # GDT_ForumBoardThreadcount
+				# ugly hack @see
+				# GDT_ForumBoardThreadcount
 				GDT_ForumPost::make('board_lastpost'),
 				GDT_ImageFile::make('board_image')->scaledVersion('thumb', 48, 48),
 				GDT_Sort::make('board_sort'),
@@ -106,19 +109,9 @@ final class GDO_ForumBoard extends GDO_Tree
 		return $this->gdoValue('board_allow_threads');
 	}
 
-	public function getTitle()
-	{
-		return $this->gdoVar('board_title');
-	}
-
 	public function displayTitle()
 	{
 		return $this->gdoDisplay('board_title');
-	}
-
-	public function getDescription()
-	{
-		return $this->gdoVar('board_description');
 	}
 
 	public function getUserThreadCount()
@@ -129,6 +122,9 @@ final class GDO_ForumBoard extends GDO_Tree
 	public function getUserPostCount()
 	{
 		return $this->gdoColumn('board_user_count_')->getPostCount();
+	}	public function getTitle()
+	{
+		return $this->gdoVar('board_title');
 	}
 
 	public function getPermission()
@@ -136,23 +132,9 @@ final class GDO_ForumBoard extends GDO_Tree
 		return $this->gdoValue('board_permission');
 	}
 
-	public function getPermissionID()
-	{
-		return $this->gdoVar('board_permission');
-	}
-
 	public function isRoot()
 	{
 		return $this->getID() === Module_Forum::instance()->cfgRootID();
-	}
-
-	/**
-	 *
-	 * @return GDO_ForumPost
-	 */
-	public function getLastPost()
-	{
-		return $this->gdoValue('board_lastpost');
 	}
 
 	/**
@@ -169,6 +151,15 @@ final class GDO_ForumBoard extends GDO_Tree
 
 	/**
 	 *
+	 * @return GDO_ForumPost
+	 */
+	public function getLastPost()
+	{
+		return $this->gdoValue('board_lastpost');
+	}
+
+	/**
+	 *
 	 * @return GDO_File
 	 */
 	public function getImage()
@@ -180,30 +171,19 @@ final class GDO_ForumBoard extends GDO_Tree
 		}
 	}
 
-	public function hasImage()
-	{
-		return ! !$this->gdoVar('board_image');
-	}
-
 	public function getImageId()
 	{
 		return $this->gdoVar('board_image');
 	}
 
-	# ###########
-	# ## HREF ###
-	# ###########
+	public function hasImage()
+	{
+		return !!$this->gdoVar('board_image');
+	}
+
 	public function hrefView(): string
 	{
 		return href('Forum', 'Boards', "&id={$this->getID()}");
-	}
-
-	# #################
-	# ## Permission ###
-	# #################
-	public function needsPermission()
-	{
-		return $this->getPermissionID() !== null;
 	}
 
 	public function canView(GDO_User $user)
@@ -211,12 +191,14 @@ final class GDO_ForumBoard extends GDO_Tree
 		return $this->needsPermission() ? $user->hasPermissionID($this->getPermissionID()) : true;
 	}
 
-	# #############
-	# ## Render ###
-	# #############
-	public function renderName(): string
+	public function needsPermission()
 	{
-		return html($this->getTitle());
+		return $this->getPermissionID() !== null;
+	}
+
+	public function getPermissionID()
+	{
+		return $this->gdoVar('board_permission');
 	}
 
 	public function displayDescription()
@@ -224,17 +206,18 @@ final class GDO_ForumBoard extends GDO_Tree
 		return html($this->getDescription());
 	}
 
-	public function renderList(): string
+	# ###########
+	# ## HREF ###
+	# ###########
+
+	public function getDescription()
 	{
-		return GDT_Template::php('Forum', 'listitem/board.php', [
-			'board' => $this
-		]);
+		return $this->gdoVar('board_description');
 	}
 
-	public function renderOption(): string
-	{
-		return sprintf('%s - %s', $this->getID(), $this->renderName());
-	}
+	# #################
+	# ## Permission ###
+	# #################
 
 	public function getPageCount()
 	{
@@ -243,21 +226,6 @@ final class GDO_ForumBoard extends GDO_Tree
 		return GDT_PageMenu::getPageCountS($count, $ipp);
 	}
 
-	# ############
-	# ## Cache ###
-	# ############
-	public function gdoAfterCreate(GDO $gdo): void
-	{
-		$this->clearCache();
-		if (self::$BUILD_TREE_UPON_SAVE)
-		{
-			parent::gdoAfterCreate($gdo);
-		}
-	}
-
-	# #############
-	# ## Unread ###
-	# #############
 	public function hasUnreadPosts(GDO_User $user)
 	{
 		if ($user->isGhost())
@@ -267,9 +235,10 @@ final class GDO_ForumBoard extends GDO_Tree
 		return GDO_ForumUnread::isBoardUnread($user, $this);
 	}
 
-	# ###################
-	# ## Subscription ###
-	# ###################
+	# #############
+	# ## Render ###
+	# #############
+
 	public function hasSubscribed(GDO_User $user)
 	{
 		if ($user->isGhost())
@@ -297,5 +266,50 @@ final class GDO_ForumBoard extends GDO_Tree
 		}
 		return $cache;
 	}
+
+	public function renderName(): string
+	{
+		return html($this->getTitle());
+	}
+
+
+
+
+	public function renderList(): string
+	{
+		return GDT_Template::php('Forum', 'listitem/board.php', [
+			'board' => $this,
+		]);
+	}
+
+
+	public function renderOption(): string
+	{
+		return sprintf('%s - %s', $this->getID(), $this->renderName());
+	}
+
+
+
+	# ############
+	# ## Cache ###
+	# ############
+	public function gdoAfterCreate(GDO $gdo): void
+	{
+		$this->clearCache();
+		if (self::$BUILD_TREE_UPON_SAVE)
+		{
+			parent::gdoAfterCreate($gdo);
+		}
+	}
+
+	# #############
+	# ## Unread ###
+	# #############
+
+
+	# ###################
+	# ## Subscription ###
+	# ###################
+
 
 }

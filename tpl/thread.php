@@ -1,7 +1,10 @@
 <?php
 namespace GDO\Forum\tpl;
-/** @var $thread \GDO\Forum\GDO_ForumThread **/
+
+/** @var $thread GDO_ForumThread * */
+
 use GDO\Forum\GDO_ForumPost;
+use GDO\Forum\GDO_ForumThread;
 use GDO\Table\GDT_List;
 use GDO\Table\GDT_PageMenu;
 
