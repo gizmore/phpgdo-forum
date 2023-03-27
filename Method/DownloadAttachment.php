@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\Method;
 use GDO\File\Method\GetFile;
 use GDO\Forum\GDO_ForumPost;
@@ -31,7 +32,7 @@ final class DownloadAttachment extends Method
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$user = GDO_User::current();
 //         $table = GDO_ForumPost::table();

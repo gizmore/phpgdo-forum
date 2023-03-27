@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\GDT_Object;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumBoard;
@@ -26,7 +27,7 @@ final class Subscribe extends Method
 
 	public function isUserRequired(): bool { return true; }
 
-	public function isGuestAllowed(): bool { return false; }
+	public function isGuestAllowed(): string { return false; }
 
 	public function gdoParameters(): array
 	{
@@ -36,7 +37,7 @@ final class Subscribe extends Method
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$user = GDO_User::current();
 
@@ -65,6 +66,8 @@ final class Subscribe extends Method
 			$user->recache();
 			return $this->redirectMessage('msg_subscribed');
 		}
+
+		return $this->error('err_forum_nothing_to_subscribe');
 	}
 
 }

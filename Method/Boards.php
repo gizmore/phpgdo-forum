@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDT_ForumBoard;
@@ -29,7 +30,7 @@ final class Boards extends Method
 		Module_Forum::instance()->renderTabs();
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$board = $this->board = $this->gdoParameterValue('id');
 

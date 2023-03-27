@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\GDT_Token;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumBoardSubscribe;
@@ -33,7 +34,7 @@ final class UnsubscribeAll extends Method
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$user = $this->getUser();
 		$token = $this->getToken();

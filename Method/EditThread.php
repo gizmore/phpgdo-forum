@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Form\GDT_AntiCSRF;
 use GDO\Form\GDT_Form;
 use GDO\Form\GDT_Submit;
@@ -32,7 +33,7 @@ final class EditThread extends MethodForm
 
 	public function isUserRequired(): bool { return true; }
 
-	public function isGuestAllowed(): bool { return Module_Forum::instance()->cfgGuestPosts(); }
+	public function isGuestAllowed(): string { return Module_Forum::instance()->cfgGuestPosts(); }
 
 	public function onRenderTabs(): void
 	{
@@ -64,7 +65,7 @@ final class EditThread extends MethodForm
 		);
 	}
 
-	public function formValidated(GDT_Form $form)
+	public function formValidated(GDT_Form $form): GDT
 	{
 		$this->getThread()->saveVar('thread_title', $form->getFormVar('thread_title'));
 		if ($form->hasChanged('thread_board'))

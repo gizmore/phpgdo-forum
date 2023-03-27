@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumUnread;
 use GDO\User\GDO_User;
@@ -18,7 +19,7 @@ final class MarkAllRead extends Method
 		return t('mark_read');
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$user = GDO_User::current();
 		GDO_ForumUnread::table()->deleteWhere("unread_user={$user->getID()}");

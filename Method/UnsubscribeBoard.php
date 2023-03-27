@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumBoard;
 use GDO\Forum\GDO_ForumBoardSubscribe;
@@ -29,7 +30,7 @@ final class UnsubscribeBoard extends Method
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$user = GDO_User::current();
 		$board = $this->getBoard();

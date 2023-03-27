@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Core\GDO;
+use GDO\Core\GDT;
 use GDO\Core\GDT_Response;
 use GDO\DB\Query;
 use GDO\Forum\GDO_ForumThread;
@@ -24,7 +25,7 @@ final class UnreadThreads extends MethodQueryList
 
 	public function isOrdered(): bool { return false; }
 
-	public function isSearched() { return false; }
+	public function isSearched(): bool { return false; }
 
 	public function onRenderTabs(): void
 	{
@@ -36,7 +37,7 @@ final class UnreadThreads extends MethodQueryList
 		return GDO_ForumThread::table();
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$cont = GDT_Container::make();
 		$cont->addField(GDT_Button::make()->label('mark_all_read')->icon('check')->href(href('Forum', 'MarkAllRead')));
@@ -60,7 +61,7 @@ final class UnreadThreads extends MethodQueryList
 		fetchTable(GDO_ForumThread::table());
 	}
 
-	public function getTableTitle()
+	public function getTableTitle(): string
 	{
 		$user = GDO_User::current();
 //         $threadcount = GDO_ForumUnread::table()->countUnread($user)Thread::table()->coun$this->thtable->pagemenu->numItems;

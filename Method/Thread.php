@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Core\GDO;
+use GDO\Core\GDT;
 use GDO\Core\Website;
 use GDO\DB\Query;
 use GDO\Forum\GDO_ForumBoard;
@@ -21,11 +22,11 @@ use GDO\User\GDO_User;
 final class Thread extends MethodQueryCards
 {
 
-	public function isPaginated() { return true; }
+	public function isPaginated(): bool { return true; }
 
 	public function isOrdered(): bool { return false; }
 
-	public function isSearched() { return false; }
+	public function isSearched(): bool { return false; }
 
 	public function getDefaultOrder(): ?string
 	{
@@ -80,7 +81,7 @@ final class Thread extends MethodQueryCards
 			where("post_thread={$thread->getID()}");
 	}
 
-	public function setupTitle(GDT_Table $table)
+	public function setupTitle(GDT_Table $table): void
 	{
 		$thread = $this->getThread();
 		Website::setTitle($thread->getTitle());
@@ -88,17 +89,18 @@ final class Thread extends MethodQueryCards
 			[$thread->displayTitle(), $table->countItems()]));
 	}
 
-	/**
-	 * Set board correctly on init.
-	 * Go to default page for a post.
-	 */
-	public function onMethodInit()
-	{
-		parent::onMethodInit();
-//         $_REQUEST['id'] = $this->getThread()->getBoardID();
-	}
+//	/**
+//	 * Set board correctly on init.
+//	 * Go to default page for a post.
+//	 */
+//	public function onMethodInit(): ?GDT
+//	{
+//		parent::onMethodInit();
+//		return
+////         $_REQUEST['id'] = $this->getThread()->getBoardID();
+//	}
 
-	protected function beforeCalculateTable(GDT_Table $table)
+	protected function beforeCalculateTable(GDT_Table $table): void
 	{
 //     	parent::beforeCalculateTable($table);
 //         $o = $this->table->headers->name;

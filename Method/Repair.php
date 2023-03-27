@@ -2,6 +2,7 @@
 namespace GDO\Forum\Method;
 
 use GDO\Admin\MethodAdmin;
+use GDO\Core\GDT;
 use GDO\Core\GDT_Checkbox;
 use GDO\DB\Database;
 use GDO\Form\GDT_AntiCSRF;
@@ -55,7 +56,7 @@ final class Repair extends MethodForm
 	### MethodForm ###
 	##################
 
-	public function formValidated(GDT_Form $form)
+	public function formValidated(GDT_Form $form): GDT
 	{
 		$this->repair($form);
 		return parent::formValidated($form);

@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\Method;
 use GDO\File\Method\GetFile;
 use GDO\Forum\GDO_ForumBoard;
@@ -34,7 +35,7 @@ final class BoardImage extends Method
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$user = GDO_User::current();
 		$board = $this->getBoard();

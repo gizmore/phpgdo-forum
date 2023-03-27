@@ -18,11 +18,11 @@ final class CRUDBoard extends MethodCrud
 
 	public function hrefList(): string { return href('Forum', 'Boards', '&id=' . Common::getRequestInt('board')); }
 
-	public function canCreate(GDO $gdo) { return GDO_User::current()->isStaff(); }
+	public function canCreate(GDO $table): bool { return GDO_User::current()->isStaff(); }
 
-	public function canUpdate(GDO $gdo) { return GDO_User::current()->isStaff(); }
+	public function canUpdate(GDO $gdo): bool { return GDO_User::current()->isStaff(); }
 
-	public function canDelete(GDO $gdo) { return GDO_User::current()->isAdmin(); }
+	public function canDelete(GDO $gdo): bool { return GDO_User::current()->isAdmin(); }
 
 	public function onRenderTabs(): void
 	{
@@ -64,12 +64,12 @@ final class CRUDBoard extends MethodCrud
 		$this->createFormButtons($form);
 	}
 
-	public function afterCreate(GDT_Form $form, GDO $gdo)
+	public function afterCreate(GDT_Form $form, GDO $gdo): void
 	{
 		$this->afterUpdate($form, $gdo);
 	}
 
-	public function afterUpdate(GDT_Form $form, GDO $gdo)
+	public function afterUpdate(GDT_Form $form, GDO $gdo): void
 	{
 		GDO_ForumBoard::table()->clearCache();
 		$gdo->recache();

@@ -18,11 +18,11 @@ final class ChildBoards extends MethodQueryList
 
 	public function gdoTable(): GDO { return GDO_ForumBoard::table(); }
 
-	public function isPaginated() { return false; }
+	public function isPaginated(): bool { return false; }
 
 	public function isOrdered(): bool { return false; }
 
-	public function isSearched() { return false; }
+	public function isSearched(): bool { return false; }
 
 	public function gdoParameters(): array
 	{
@@ -50,7 +50,7 @@ final class ChildBoards extends MethodQueryList
 		return $this->gdoParameterValue('id');
 	}
 
-	public function setupTitle(GDT_Table $table)
+	public function setupTitle(GDT_Table $table): void
 	{
 		$board = $this->getBoard();
 		$table->titleRaw($board->renderName());

@@ -22,9 +22,9 @@ final class Threads extends MethodQueryList
 
 	public function isOrdered(): bool { return false; }
 
-	public function isPaginated() { return true; }
+	public function isPaginated(): bool { return true; }
 
-	public function isSearched() { return false; }
+	public function isSearched(): bool { return false; }
 
 	public function getDefaultOrder(): ?string { return 'thread_created'; }
 
@@ -56,7 +56,7 @@ final class Threads extends MethodQueryList
 		return $this->gdoParameterValue('id');
 	}
 
-	public function setupTitle(GDT_Table $table)
+	public function setupTitle(GDT_Table $table): void
 	{
 		$board = $this->getBoard();
 		$table->title('forum_board_threads', [

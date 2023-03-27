@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\GDT_Hook;
 use GDO\Date\Time;
 use GDO\Form\GDT_AntiCSRF;
@@ -32,7 +33,7 @@ final class CreateThread extends MethodForm
 
 	public function isUserRequired(): bool { return true; }
 
-	public function isGuestAllowed(): bool { return Module_Forum::instance()->cfgGuestPosts(); }
+	public function isGuestAllowed(): string { return Module_Forum::instance()->cfgGuestPosts(); }
 
 	public function onRenderTabs(): void
 	{
@@ -46,7 +47,7 @@ final class CreateThread extends MethodForm
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$board = $this->getBoard();
 		if (
@@ -59,10 +60,7 @@ final class CreateThread extends MethodForm
 		return parent::execute();
 	}
 
-	/**
-	 * @return GDO_ForumBoard
-	 */
-	public function getBoard()
+	public function getBoard(): GDO_ForumBoard
 	{
 		return $this->gdoParameterValue('board');
 	}
@@ -90,7 +88,7 @@ final class CreateThread extends MethodForm
 		}
 	}
 
-	public function formValidated(GDT_Form $form)
+	public function formValidated(GDT_Form $form): GDT
 	{
 		$module = Module_Forum::instance();
 		$thread = GDO_ForumThread::blank($form->getFormVars());

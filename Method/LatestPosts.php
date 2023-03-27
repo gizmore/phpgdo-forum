@@ -19,9 +19,9 @@ use GDO\User\GDO_User;
 final class LatestPosts extends MethodQueryList
 {
 
-	public function isPaginated() { return false; }
+	public function isPaginated(): bool { return false; }
 
-	public function isSearched() { return false; }
+	public function isSearched(): bool { return false; }
 
 	public function isOrdered(): bool { return false; }
 
@@ -32,7 +32,7 @@ final class LatestPosts extends MethodQueryList
 		return Module_Forum::instance()->cfgNumLatestThreads();
 	}
 
-	protected function setupTitle(GDT_Table $table)
+	protected function setupTitle(GDT_Table $table): void
 	{
 		$table->title('forum_list_latest_threads');
 	}

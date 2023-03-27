@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace GDO\Forum\Method;
 
 use GDO\Core\GDO;
+use GDO\Core\GDT;
 use GDO\Core\GDT_Hook;
 use GDO\Core\GDT_Response;
 use GDO\Date\Time;
@@ -11,6 +13,7 @@ use GDO\Form\GDT_Hidden;
 use GDO\Form\GDT_Submit;
 use GDO\Form\MethodCrud;
 use GDO\Forum\GDO_ForumPost;
+use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\GDO_ForumUnread;
 use GDO\Forum\Module_Forum;
 use GDO\UI\GDT_CardView;
@@ -22,15 +25,16 @@ use GDO\Util\Common;
 /**
  * CRUD method for GDO_ForumPost.
  *
- * @version 6.10
- * @since 6.03
+ * @version 7.0.3
+ * @since 6.3.0
  * @author gizmore
  */
 final class CRUDPost extends MethodCrud
 {
 
-	private $post;
-	private $thread;
+	private GDO_ForumPost $post;
+
+	private GDO_ForumThread $thread;
 
 	public function isTrivial(): bool { return false; }
 
@@ -38,20 +42,20 @@ final class CRUDPost extends MethodCrud
 
 	public function hrefList(): string { return href('Forum', 'Thread', '&thread=' . $this->thread->getID()); }
 
-	public function isGuestAllowed(): bool { return Module_Forum::instance()->cfgGuestPosts(); }
+	public function isGuestAllowed(): string { return Module_Forum::instance()->cfgGuestPosts(); }
 
-	public function canCreate(GDO $gdo) { return true; }
+	public function canCreate(GDO $table): bool { return true; }
 
-	public function canUpdate(GDO $gdo) { return $gdo->canEdit(GDO_User::current()); }
+	public function canUpdate(GDO $gdo): bool { return $gdo->canEdit(GDO_User::current()); }
 
-	public function canDelete(GDO $gdo) { return GDO_User::current()->isAdmin(); }
+	public function canDelete(GDO $gdo): bool { return GDO_User::current()->isAdmin(); }
 
 	public function onRenderTabs(): void
 	{
 		Module_Forum::instance()->renderTabs();
 	}
 
-	public function onMethodInit()
+	public function onMethodInit(): ?GDT
 	{
 		# 1. Get thread
 		$user = GDO_User::current();
@@ -74,6 +78,7 @@ final class CRUDPost extends MethodCrud
 		}
 		#
 		$_REQUEST['board'] = $this->thread->getBoardID();
+		return null;
 	}
 
 	public function hasPermission(GDO_User $user): bool
@@ -90,7 +95,7 @@ final class CRUDPost extends MethodCrud
 		return true;
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		# 3. Execute
 		$response = parent::execute();
@@ -124,7 +129,7 @@ final class CRUDPost extends MethodCrud
 		$form->actions()->addField(GDT_Submit::make('btn_preview')->label('btn_preview')->icon('view'));
 	}
 
-	public function afterCreate(GDT_Form $form, GDO $gdo)
+	public function afterCreate(GDT_Form $form, GDO $gdo): void
 	{
 		$form->getField('post_attachment')->previewHREF(href('Forum', 'DownloadAttachment', "&post={$gdo->getID()}&file={id}"));
 		$module = Module_Forum::instance();
@@ -138,10 +143,10 @@ final class CRUDPost extends MethodCrud
 		GDT_Hook::callWithIPC('ForumPostCreated', $gdo);
 		$this->thread->updateBoardLastPost($gdo);
 		$id = $gdo->getID();
-		return GDT_Redirect::to(href('Forum', 'Thread', '&post=' . $id . '#card-' . $id));
+		GDT_Redirect::to(href('Forum', 'Thread', '&post=' . $id . '#card-' . $id));
 	}
 
-	public function afterUpdate(GDT_Form $form, GDO $gdo)
+	public function afterUpdate(GDT_Form $form, GDO $gdo): void
 	{
 		$module = Module_Forum::instance();
 		$module->saveConfigVar('forum_latest_post_date', $gdo->getCreated());
@@ -150,15 +155,13 @@ final class CRUDPost extends MethodCrud
 		$this->thread->updateBoardLastPost($gdo);
 		GDO_ForumUnread::markUnread($gdo);
 		GDO_ForumUnread::markRead(GDO_User::current(), $gdo);
-		return GDT_Redirect::to(href('Forum', 'Thread', '&post=' . $id . '#card-' . $id));
+		GDT_Redirect::to(href('Forum', 'Thread', '&post=' . $id . '#card-' . $id));
 	}
 
 	/**
 	 * Get the initial message for quoting a message.
-	 *
-	 * @return mixed
 	 */
-	public function initialMessage()
+	public function initialMessage(): string
 	{
 		$by = $this->post->getCreator();
 		$at = $this->post->getCreated();

@@ -14,7 +14,7 @@ use GDO\User\GDO_UserSetting;
 final class CronjobMailer extends MethodCronjob
 {
 
-	public function run()
+	public function run(): void
 	{
 		$module = Module_Forum::instance();
 		$lastId = $module->cfgLastPostMail();

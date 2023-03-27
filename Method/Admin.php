@@ -2,6 +2,8 @@
 namespace GDO\Forum\Method;
 
 use GDO\Admin\MethodAdmin;
+use GDO\Core\GDT;
+use GDO\Core\GDT_Response;
 use GDO\Core\Method;
 use GDO\UI\GDT_Bar;
 use GDO\UI\GDT_Link;
@@ -24,7 +26,10 @@ final class Admin extends Method
 		return t('admin');
 	}
 
-	public function execute() {}
+	public function execute(): GDT
+	{
+		return GDT_Response::make();
+	}
 
 	public function onRenderTabs(): void
 	{

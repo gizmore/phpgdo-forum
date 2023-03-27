@@ -16,7 +16,7 @@ use GDO\Table\MethodQueryList;
 final class Search extends MethodQueryList
 {
 
-	public function isSearched() { return true; }
+	public function isSearched(): bool { return true; }
 
 	public function onRenderTabs(): void
 	{

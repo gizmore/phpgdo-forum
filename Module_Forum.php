@@ -80,10 +80,10 @@ final class Module_Forum extends GDO_Module
 	public function getACLDefaults(): array
 	{
 		return [
-			'forum_posts' => [GDT_ACLRelation::ALL, 0, null],
-			'forum_threads' => [GDT_ACLRelation::ALL, 0, null],
-			'forum_readmark' => [GDT_ACLRelation::HIDDEN, 0, null],
-			'forum_subscription' => [GDT_ACLRelation::HIDDEN, 0, null],
+			'forum_posts' => [GDT_ACLRelation::ALL, '0', null],
+			'forum_threads' => [GDT_ACLRelation::ALL, '0', null],
+			'forum_readmark' => [GDT_ACLRelation::HIDDEN, '0', null],
+			'forum_subscription' => [GDT_ACLRelation::HIDDEN, '0', null],
 		];
 	}
 
@@ -146,7 +146,7 @@ final class Module_Forum extends GDO_Module
 		}
 	}
 
-	public function cfgRootID()
+	public function cfgRootID(): ?string
 	{
 		return $this->getConfigVar('forum_root');
 	}

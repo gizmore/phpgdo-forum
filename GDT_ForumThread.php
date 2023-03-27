@@ -30,7 +30,7 @@ final class GDT_ForumThread extends GDT_ObjectSelect
 	### Edit permissions ###
 	########################
 
-	public function validate($value): bool
+	public function validate(int|float|string|array|null|object|bool $value): bool
 	{
 		if (parent::validate($value))
 		{

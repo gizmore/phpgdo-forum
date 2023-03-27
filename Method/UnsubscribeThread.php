@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\Method;
 use GDO\Forum\GDO_ForumThread;
 use GDO\Forum\GDO_ForumThreadSubscribe;
@@ -29,7 +30,7 @@ final class UnsubscribeThread extends Method
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$user = GDO_User::current();
 		$thread = $this->getThread();

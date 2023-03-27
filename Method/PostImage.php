@@ -1,6 +1,7 @@
 <?php
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\Method;
 use GDO\File\Method\GetFile;
 use GDO\Forum\GDO_ForumPost;
@@ -43,7 +44,7 @@ final class PostImage extends Method
 		return $this->gdoParameterValue('id');
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$post = $this->getPost();
 		if (!($attachment = $post->getAttachment()))
