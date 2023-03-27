@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 namespace GDO\Forum;
 
 use GDO\Category\GDO_Tree;
 use GDO\Core\GDO;
+use GDO\Core\GDO_DBException;
 use GDO\Core\GDT_AutoInc;
 use GDO\Core\GDT_Checkbox;
 use GDO\Core\GDT_CreatedAt;
@@ -15,6 +17,7 @@ use GDO\File\GDT_ImageFile;
 use GDO\Table\GDT_PageMenu;
 use GDO\Table\GDT_Sort;
 use GDO\UI\GDT_Title;
+use GDO\User\GDO_Permission;
 use GDO\User\GDO_User;
 use GDO\User\GDT_Permission;
 
@@ -29,15 +32,11 @@ use GDO\User\GDT_Permission;
 final class GDO_ForumBoard extends GDO_Tree
 {
 
-	public static $BUILD_TREE_UPON_SAVE = true;
+	public static bool $BUILD_TREE_UPON_SAVE = true;
 
 	# set to false for faster board creation during import.
 
-	/**
-	 *
-	 * @return self
-	 */
-	public static function getRoot()
+	public static function getRoot(): self
 	{
 		return Module_Forum::instance()->cfgRoot();
 	}
@@ -55,7 +54,7 @@ final class GDO_ForumBoard extends GDO_Tree
 	# ## Tree ###
 	# ###########
 
-	public function gdoTreePrefix()
+	public function gdoTreePrefix(): string
 	{
 		return 'board';
 	}
@@ -68,9 +67,6 @@ final class GDO_ForumBoard extends GDO_Tree
 		return true;
 	}
 
-	# GDO Cache is a good idea for Thread->getBoard()
-	// public function memCached() { return true; } # uses cacheall in memcached (see further down), so no single row storage
-	// for memcached
 	public function gdoColumns(): array
 	{
 		return array_merge(
@@ -104,79 +100,68 @@ final class GDO_ForumBoard extends GDO_Tree
 	# #############
 	# ## Getter ###
 	# #############
-	public function allowsThreads()
+	public function allowsThreads(): string
 	{
-		return $this->gdoValue('board_allow_threads');
+		return $this->gdoVar('board_allow_threads');
 	}
 
-	public function displayTitle()
+	public function displayTitle(): string
 	{
 		return $this->gdoDisplay('board_title');
 	}
 
-	public function getUserThreadCount()
+	public function getUserThreadCount(): int
 	{
 		return $this->gdoColumn('board_user_count_')->getThreadCount();
 	}
 
-	public function getUserPostCount()
+	public function getUserPostCount(): int
 	{
 		return $this->gdoColumn('board_user_count_')->getPostCount();
-	}	public function getTitle()
+	}
+
+	public function getTitle(): string
 	{
 		return $this->gdoVar('board_title');
 	}
 
-	public function getPermission()
+	public function getPermission(): ?GDO_Permission
 	{
 		return $this->gdoValue('board_permission');
 	}
 
-	public function isRoot()
+	public function isRoot(): bool
 	{
 		return $this->getID() === Module_Forum::instance()->cfgRootID();
 	}
 
-	/**
-	 *
-	 * @return GDO_ForumThread
-	 */
-	public function getLastThread()
+	public function getLastThread(): ?GDO_ForumThread
 	{
-		if ($post = $this->getLastPost())
-		{
-			return $post->getThread();
-		}
+		$post = $this->getLastPost();
+		return $post?->getThread();
 	}
 
-	/**
-	 *
-	 * @return GDO_ForumPost
-	 */
-	public function getLastPost()
+	public function getLastPost(): ?GDO_ForumPost
 	{
 		return $this->gdoValue('board_lastpost');
 	}
 
-	/**
-	 *
-	 * @return GDO_File
-	 */
-	public function getImage()
+	public function getImage(): ?GDO_File
 	{
 		if ($image = $this->gdoValue('board_image'))
 		{
 			$image->tempHref(href('Forum', 'BoardImage', '&board=' . $this->getID() . '&file=' . $this->getImageId()));
 			return $image;
 		}
+		return null;
 	}
 
-	public function getImageId()
+	public function getImageId(): ?string
 	{
 		return $this->gdoVar('board_image');
 	}
 
-	public function hasImage()
+	public function hasImage(): bool
 	{
 		return !!$this->gdoVar('board_image');
 	}
@@ -186,22 +171,22 @@ final class GDO_ForumBoard extends GDO_Tree
 		return href('Forum', 'Boards', "&id={$this->getID()}");
 	}
 
-	public function canView(GDO_User $user)
+	public function canView(GDO_User $user): bool
 	{
-		return $this->needsPermission() ? $user->hasPermissionID($this->getPermissionID()) : true;
+		return !$this->needsPermission() || $user->hasPermissionID($this->getPermissionID());
 	}
 
-	public function needsPermission()
+	public function needsPermission(): bool
 	{
 		return $this->getPermissionID() !== null;
 	}
 
-	public function getPermissionID()
+	public function getPermissionID(): ?string
 	{
 		return $this->gdoVar('board_permission');
 	}
 
-	public function displayDescription()
+	public function displayDescription(): string
 	{
 		return html($this->getDescription());
 	}
@@ -210,7 +195,7 @@ final class GDO_ForumBoard extends GDO_Tree
 	# ## HREF ###
 	# ###########
 
-	public function getDescription()
+	public function getDescription(): ?string
 	{
 		return $this->gdoVar('board_description');
 	}
@@ -219,40 +204,45 @@ final class GDO_ForumBoard extends GDO_Tree
 	# ## Permission ###
 	# #################
 
-	public function getPageCount()
+	public function getPageCount(): int
 	{
 		$count = GDO_ForumThread::table()->countWhere('thread_board=' . $this->getID());
 		$ipp = Module_Forum::instance()->cfgThreadsPerPage();
 		return GDT_PageMenu::getPageCountS($count, $ipp);
 	}
 
-	public function hasUnreadPosts(GDO_User $user)
+	public function hasUnreadPosts(GDO_User $user): bool
 	{
 		if ($user->isGhost())
 		{
 			return false;
 		}
-		return GDO_ForumUnread::isBoardUnread($user, $this);
+		return (bool) GDO_ForumUnread::isBoardUnread($user, $this);
 	}
 
 	# #############
 	# ## Render ###
 	# #############
 
-	public function hasSubscribed(GDO_User $user)
+	public function hasSubscribed(GDO_User $user): bool
 	{
 		if ($user->isGhost())
 		{
 			return false;
 		}
+
 		if (Module_Forum::instance()->userSettingVar($user, 'forum_subscription') === GDT_ForumSubscribe::ALL)
 		{
 			return true;
 		}
-		return strpos($this->getForumSubscriptions($user), ",{$this->getID()},") !== false;
+
+		return str_contains($this->getForumSubscriptions($user), ",{$this->getID()},");
 	}
 
-	public function getForumSubscriptions(GDO_User $user)
+	/**
+	 * @throws GDO_DBException
+	 */
+	public function getForumSubscriptions(GDO_User $user): string
 	{
 		if (null === ($cache = $user->tempGet('gdo_forum_board_subsciptions')))
 		{
@@ -273,8 +263,6 @@ final class GDO_ForumBoard extends GDO_Tree
 	}
 
 
-
-
 	public function renderList(): string
 	{
 		return GDT_Template::php('Forum', 'listitem/board.php', [
@@ -288,8 +276,6 @@ final class GDO_ForumBoard extends GDO_Tree
 		return sprintf('%s - %s', $this->getID(), $this->renderName());
 	}
 
-
-
 	# ############
 	# ## Cache ###
 	# ############
@@ -301,15 +287,6 @@ final class GDO_ForumBoard extends GDO_Tree
 			parent::gdoAfterCreate($gdo);
 		}
 	}
-
-	# #############
-	# ## Unread ###
-	# #############
-
-
-	# ###################
-	# ## Subscription ###
-	# ###################
 
 
 }

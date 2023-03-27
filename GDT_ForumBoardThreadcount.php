@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace GDO\Forum;
 
 use GDO\Core\GDO;
+use GDO\Core\GDO_DBException;
 use GDO\Core\GDT_Virtual;
 use GDO\DB\Database;
 use GDO\DB\Query;
@@ -12,45 +14,48 @@ use GDO\User\GDO_User;
  * Visible threadcount for a user.
  * Visible postcount for a user.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 3.5.0
  * @author gizmore
  */
 final class GDT_ForumBoardThreadcount extends GDT_Virtual
 {
 
-	private $countValue = ['0', '0'];
+	private array $countValue = ['0', '0'];
 
-	/**
-	 * @return GDO_ForumBoard
-	 */
-	public function getBoard()
+	public function getBoard(): GDO_ForumBoard
 	{
 		return $this->gdo;
 	}
 
-	public function getThreadCount()
+	public function getThreadCount(): int
 	{
-		return $this->countValue[0];
+		return (int) $this->countValue[0];
 	}
 
-	public function getPostCount()
+	public function getPostCount(): int
 	{
-		return $this->countValue[1];
+		return (int) $this->countValue[1];
 	}
 
-	public function var(?string $var): self
+	public function var(?string $var): static
 	{
 		if ($var !== null)
 		{
 			$counts = explode(',', $var);
 			$this->countValue = $counts;
 		}
+		else
+		{
+			$this->countValue = ['0', '0'];
+		}
 		return $this;
 	}
 
 	/**
 	 * Query count of visible threads + posts.
+	 *
+	 * @throws GDO_DBException
 	 */
 	public function gdoBeforeRead(GDO $gdo, Query $query): void
 	{
