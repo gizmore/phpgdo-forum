@@ -207,14 +207,14 @@ final class GDO_ForumThread extends GDO
 		return GDO_ForumPost::table()->select('1')->
 			where("post_thread={$this->getID()}")->
 			where("post_creator={$user->getID()}")->
-			exec()->fetchValue() === '1';
+			exec()->fetchVar() === '1';
 	}
 
 	public function getForumSubscriptions(GDO_User $user)
 	{
 		if (null === ($cache = $user->tempGet('gdo_forum_thread_subsciptions')))
 		{
-			$cache = GDO_ForumThreadSubscribe::table()->select('GROUP_CONCAT(subscribe_thread)')->where("subscribe_user={$user->getID()}")->exec()->fetchValue();
+			$cache = GDO_ForumThreadSubscribe::table()->select('GROUP_CONCAT(subscribe_thread)')->where("subscribe_user={$user->getID()}")->exec()->fetchVar();
 			$cache = empty($cache) ? '' : ",$cache,";
 			$user->tempSet('gdo_forum_thread_subsciptions', $cache);
 			$user->recache();

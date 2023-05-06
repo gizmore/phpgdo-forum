@@ -52,7 +52,7 @@ final class GDO_ForumUnread extends GDO
 		$users = $query->exec();
 		$fields = [GDT_UInt::make('unread_user'), GDT_UInt::make('unread_post')];
 		$bulk = [];
-		while ($userID = $users->fetchValue())
+		while ($userID = $users->fetchVar())
 		{
 			$bulk[] = [$userID, $postID];
 
@@ -99,7 +99,7 @@ final class GDO_ForumUnread extends GDO
 			joinObject('unread_post_thread')->
 			where("thread_id={$thread->getID()}")->
 			where("unread_user={$user->getID()}")->
-			exec()->fetchValue();
+			exec()->fetchVar();
 	}
 
 	public static function isBoardUnread(GDO_User $user, GDO_ForumBoard $board)
@@ -111,7 +111,7 @@ final class GDO_ForumUnread extends GDO
 			joinObject('unread_post_board')->
 			where("board_left BETWEEN {$board->getLeft()} AND {$board->getRight()}")->
 			where("unread_user={$user->getID()}")->
-			exec()->fetchValue();
+			exec()->fetchVar();
 	}
 
 	public static function isPostUnread(GDO_User $user, GDO_ForumPost $post)

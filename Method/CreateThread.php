@@ -123,7 +123,7 @@ final class CreateThread extends MethodForm
 	public function plugVars(): array
 	{
 		return [
-			['board' => GDO_ForumBoard::table()->select('board_id')->where('board_allow_threads')->first()->exec()->fetchValue()],
+			['board' => GDO_ForumBoard::table()->select('board_id')->where('board_allow_threads')->first()->exec()->fetchVar()],
 		];
 	}
 

@@ -249,7 +249,7 @@ final class GDO_ForumBoard extends GDO_Tree
 			$cache = GDO_ForumBoardSubscribe::table()->select('GROUP_CONCAT(subscribe_board)')
 				->where("subscribe_user={$user->getID()}")
 				->exec()
-				->fetchValue();
+				->fetchVar();
 			$cache = empty($cache) ? '' : ",$cache,";
 			$user->tempSet('gdo_forum_board_subsciptions', $cache);
 			$user->recache();
