@@ -36,7 +36,7 @@ final class CRUDBoard extends MethodCrud
 		]);
 	}
 
-	public function createForm(GDT_Form $form): void
+	protected function createForm(GDT_Form $form): void
 	{
 		$gdo = GDO_ForumBoard::table();
 

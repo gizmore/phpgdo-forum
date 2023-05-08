@@ -3,6 +3,7 @@ namespace GDO\Forum\Method;
 
 use GDO\Core\GDT;
 use GDO\Core\GDT_Hook;
+use GDO\Core\Website;
 use GDO\Date\Time;
 use GDO\Form\GDT_AntiCSRF;
 use GDO\Form\GDT_Form;
@@ -33,7 +34,7 @@ final class CreateThread extends MethodForm
 
 	public function isUserRequired(): bool { return true; }
 
-	public function isGuestAllowed(): string { return Module_Forum::instance()->cfgGuestPosts(); }
+	public function isGuestAllowed(): bool { return Module_Forum::instance()->cfgGuestPosts(); }
 
 	public function onRenderTabs(): void
 	{
@@ -55,9 +56,14 @@ final class CreateThread extends MethodForm
 			(!$board->allowsThreads())
 		)
 		{
-			return $this->error('err_permission_create');
+			return $this->permissionError();('err_permission_create');
 		}
 		return parent::execute();
+	}
+
+	public function permissionError(string $reason): GDT
+	{
+		return Website::error($this->renderTitle(), 'err_permission', [$this->gdoHumanName(), $reason]);
 	}
 
 	public function getBoard(): GDO_ForumBoard
@@ -65,7 +71,7 @@ final class CreateThread extends MethodForm
 		return $this->gdoParameterValue('board');
 	}
 
-	public function createForm(GDT_Form $form): void
+	protected function createForm(GDT_Form $form): void
 	{
 		$board = $this->getBoard();
 		$gdo = GDO_ForumThread::table();

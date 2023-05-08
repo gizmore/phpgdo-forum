@@ -42,7 +42,7 @@ final class CRUDPost extends MethodCrud
 
 	public function hrefList(): string { return href('Forum', 'Thread', '&thread=' . $this->thread->getID()); }
 
-	public function isGuestAllowed(): string { return Module_Forum::instance()->cfgGuestPosts(); }
+	public function isGuestAllowed(): bool { return Module_Forum::instance()->cfgGuestPosts(); }
 
 	public function canCreate(GDO $table): bool { return true; }
 
@@ -104,7 +104,7 @@ final class CRUDPost extends MethodCrud
 		return GDT_Response::makeWith($card)->addField($response);
 	}
 
-	public function createForm(GDT_Form $form): void
+	protected function createForm(GDT_Form $form): void
 	{
 		$initialPostHTML = '';
 //         if ($this->hasInput('quote'))

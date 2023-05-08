@@ -26,12 +26,10 @@ return [
 	'forum_list_latest_threads' => 'Latest Forum Activity',
 	'last_post' => 'Last post from %s by %s',
 	'list_threads' => '%s Threads in %s',
-	'board_allow_threads' => 'Allow threads?',
 	'forum_board_last_subtext' => 'Last Thread: %s',
 	#######################################################################
 	'cfg_forum_root' => 'Forum board root',
 	'tt_cfg_forum_root' => 'This board is automatically created during install.',
-	'cfg_forum_guest_posts' => 'Allow guest posts?',
 	'cfg_forum_attachments' => 'Allow attachments?',
 	'cfg_forum_attachment_level' => 'Userlevel required for attachments',
 	'cfg_forum_post_level' => 'Userlevel required to post',
@@ -45,7 +43,7 @@ return [
 	'msg_unsubscribed' => 'You have not subscribed via mail.',
 	#######################################################################
 	'no_parent' => 'No parent selected',
-	'board_allow_threads' => 'Allow threads for this board',
+	'board_allow_threads' => 'Allow threads for this board?',
 	#######################################################################
 	'mt_forum_createthread' => 'Start new Thread',
 	'msg_thread_created' => 'Your thread has been created successfully.',

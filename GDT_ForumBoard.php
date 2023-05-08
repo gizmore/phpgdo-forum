@@ -27,7 +27,7 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 
 	public function defaultLabel(): self { return $this->label('board'); }
 
-	public function getChoices(): array
+	protected function getChoices(): array
 	{
 		if ($this->noChoices)
 		{

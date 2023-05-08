@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 namespace GDO\Forum;
 
 use GDO\Core\GDO_Module;
 use GDO\Core\GDT_Checkbox;
 use GDO\Core\GDT_Template;
 use GDO\Core\GDT_UInt;
+use GDO\Core\Module_Core;
 use GDO\Date\GDT_DateTime;
 use GDO\DB\Cache;
 use GDO\UI\GDT_Link;
@@ -18,7 +20,7 @@ use GDO\User\GDT_Level;
 /**
  * GDO Forum Module.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 2.0.0
  * @author gizmore
  */
@@ -179,7 +181,7 @@ final class Module_Forum extends GDO_Module
 		}
 	}
 
-	public function cfgHookLeftBar()
+	public function cfgHookLeftBar(): bool
 	{
 		return $this->getConfigValue('hook_sidebar');
 	}
@@ -189,32 +191,32 @@ final class Module_Forum extends GDO_Module
 		return $this->getConfigValue('forum_root');
 	}
 
-	public function cfgGuestPosts()
+	public function cfgGuestPosts(): bool
 	{
-		return $this->getConfigValue('forum_guest_posts');
+		return Module_Core::instance()->cfgAllowGuests();
 	}
 
-	public function cfgPostLevel()
+	public function cfgPostLevel(): int
 	{
 		return $this->getConfigValue('forum_post_level');
 	}
 
-	public function cfgLastPostDate()
+	public function cfgLastPostDate(): ?string
 	{
 		return $this->getConfigVar('forum_latest_post_date');
 	}
 
-	public function cfgLastPostMail()
+	public function cfgLastPostMail(): ?string
 	{
 		return $this->getConfigVar('forum_mail_sent_for_post');
 	}
 
-	public function cfgNumLatestThreads()
+	public function cfgNumLatestThreads(): int
 	{
-		return $this->getConfigVar('forum_num_latest');
+		return $this->getConfigValue('forum_num_latest');
 	}
 
-	public function cfgMailEnabled()
+	public function cfgMailEnabled(): bool
 	{
 		return $this->getConfigValue('forum_mail_enable');
 	}
@@ -223,7 +225,7 @@ final class Module_Forum extends GDO_Module
 	# ## Permissions ###
 	# ##################
 
-	public function cfgThreadsPerPage()
+	public function cfgThreadsPerPage(): int
 	{
 		return $this->getConfigValue('forum_threads_per_page');
 	}
@@ -232,12 +234,12 @@ final class Module_Forum extends GDO_Module
 	# ## Install ###
 	# ##############
 
-	public function canUpload(GDO_User $user)
+	public function canUpload(GDO_User $user): bool
 	{
 		return $this->cfgAttachments() && ($user->getLevel() >= $this->cfgAttachmentLevel());
 	}
 
-	public function cfgAttachments()
+	public function cfgAttachments(): bool
 	{
 		return $this->getConfigValue('forum_attachments');
 	}
@@ -246,12 +248,12 @@ final class Module_Forum extends GDO_Module
 	# ## Hooks ###
 	# ############
 
-	public function cfgAttachmentLevel()
+	public function cfgAttachmentLevel(): int
 	{
 		return $this->getConfigValue('forum_attachment_level');
 	}
 
-	public function hookForumPostCreated(GDO_ForumPost $post)
+	public function hookForumPostCreated(GDO_ForumPost $post): void
 	{
 		$post->getThread()
 			->getBoard()

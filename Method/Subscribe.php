@@ -27,7 +27,7 @@ final class Subscribe extends Method
 
 	public function isUserRequired(): bool { return true; }
 
-	public function isGuestAllowed(): string { return false; }
+	public function isGuestAllowed(): bool { return false; }
 
 	public function gdoParameters(): array
 	{

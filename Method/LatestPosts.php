@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace GDO\Forum\Method;
 
 use GDO\Core\GDO;
@@ -12,7 +13,7 @@ use GDO\User\GDO_User;
 /**
  * Display a list of latest threads.
  *
- * @version 6.10.4
+ * @version 7.0.3
  * @since 3.0.0
  * @author gizmore
  */
@@ -27,7 +28,7 @@ final class LatestPosts extends MethodQueryList
 
 	public function gdoTable(): GDO { return GDO_ForumThread::table(); }
 
-	public function numLatestThreads()
+	public function numLatestThreads(): int
 	{
 		return Module_Forum::instance()->cfgNumLatestThreads();
 	}

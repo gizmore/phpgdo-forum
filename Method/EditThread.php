@@ -33,7 +33,7 @@ final class EditThread extends MethodForm
 
 	public function isUserRequired(): bool { return true; }
 
-	public function isGuestAllowed(): string { return Module_Forum::instance()->cfgGuestPosts(); }
+	public function isGuestAllowed(): bool { return Module_Forum::instance()->cfgGuestPosts(); }
 
 	public function onRenderTabs(): void
 	{
@@ -47,7 +47,7 @@ final class EditThread extends MethodForm
 		];
 	}
 
-	public function createForm(GDT_Form $form): void
+	protected function createForm(GDT_Form $form): void
 	{
 		$user = GDO_User::current();
 		$gdo = $this->gdoParameterValue('id');

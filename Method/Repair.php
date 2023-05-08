@@ -34,7 +34,7 @@ final class Repair extends MethodForm
 
 	public function isTransactional(): bool { return false; }
 
-	public function createForm(GDT_Form $form): void
+	protected function createForm(GDT_Form $form): void
 	{
 		$form->text('info_forum_repair');
 		$form->addFields(
