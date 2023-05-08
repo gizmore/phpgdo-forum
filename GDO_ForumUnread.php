@@ -82,7 +82,6 @@ final class GDO_ForumUnread extends GDO
 		{
 			$unread = self::table()->countWhere("unread_user={$user->getID()}");
 			$user->tempSet('forum_unread', $unread);
-			$user->recache();
 		}
 		return $unread;
 	}

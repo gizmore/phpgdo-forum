@@ -252,7 +252,6 @@ final class GDO_ForumBoard extends GDO_Tree
 				->fetchVar();
 			$cache = empty($cache) ? '' : ",$cache,";
 			$user->tempSet('gdo_forum_board_subsciptions', $cache);
-			$user->recache();
 		}
 		return $cache;
 	}

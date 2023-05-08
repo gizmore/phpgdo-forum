@@ -52,7 +52,6 @@ final class Subscribe extends Method
 				'subscribe_board' => $boardId,
 			])->replace();
 			$user->tempUnset('gdo_forum_board_subsciptions');
-			$user->recache();
 			return $this->redirectMessage('msg_subscribed');
 		}
 
@@ -63,7 +62,6 @@ final class Subscribe extends Method
 				'subscribe_thread' => $threadId,
 			])->replace();
 			$user->tempUnset('gdo_forum_thread_subsciptions');
-			$user->recache();
 			return $this->redirectMessage('msg_subscribed');
 		}
 

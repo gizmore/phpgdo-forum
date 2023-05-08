@@ -72,7 +72,6 @@ final class CRUDBoard extends MethodCrud
 	public function afterUpdate(GDT_Form $form, GDO $gdo): void
 	{
 		GDO_ForumBoard::table()->clearCache();
-		$gdo->recache();
 	}
 
 }

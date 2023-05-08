@@ -101,7 +101,6 @@ final class GDO_ForumThread extends GDO
 			if ($lastPost)
 			{
 				$this->tempSet($key, $lastPost);
-				$this->recache();
 			}
 		}
 		return $lastPost;
@@ -217,7 +216,6 @@ final class GDO_ForumThread extends GDO
 			$cache = GDO_ForumThreadSubscribe::table()->select('GROUP_CONCAT(subscribe_thread)')->where("subscribe_user={$user->getID()}")->exec()->fetchVar();
 			$cache = empty($cache) ? '' : ",$cache,";
 			$user->tempSet('gdo_forum_thread_subsciptions', $cache);
-			$user->recache();
 		}
 		return $cache;
 	}

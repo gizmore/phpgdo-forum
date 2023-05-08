@@ -37,7 +37,6 @@ final class UnsubscribeThread extends Method
 		GDO_ForumThreadSubscribe::table()->deleteWhere(
 			"subscribe_user={$user->getID()} AND subscribe_thread={$thread->getID()}");
 		$user->tempUnset('gdo_forum_thread_subsciptions');
-		$user->recache();
 		$href = href('Forum', 'Boards', '&boardid=' . $thread->getBoard()->getID());
 		$href = GDT_Redirect::hrefBack($href);
 		return $this->redirectMessage('msg_unsubscribed', null, $href);

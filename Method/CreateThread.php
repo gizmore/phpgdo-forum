@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace GDO\Forum\Method;
 
+use GDO\Core\GDO_ArgError;
+use GDO\Core\GDO_DBException;
 use GDO\Core\GDT;
 use GDO\Core\GDT_Hook;
 use GDO\Core\Website;
@@ -21,6 +24,7 @@ use GDO\User\GDO_User;
  * Start a new thread.
  *
  * @author gizmore
+ * @version 7.0.3
  * @see GDO_ForumBoard
  * @see GDO_ForumThread
  * @see GDO_ForumPost
@@ -28,9 +32,7 @@ use GDO\User\GDO_User;
 final class CreateThread extends MethodForm
 {
 
-	private $post;
-
-	private $board;
+	private GDO_ForumPost $post;
 
 	public function isUserRequired(): bool { return true; }
 
@@ -48,6 +50,9 @@ final class CreateThread extends MethodForm
 		];
 	}
 
+	/**
+	 * @throws GDO_ArgError
+	 */
 	public function execute(): GDT
 	{
 		$board = $this->getBoard();
@@ -56,7 +61,7 @@ final class CreateThread extends MethodForm
 			(!$board->allowsThreads())
 		)
 		{
-			return $this->permissionError();('err_permission_create');
+			return $this->permissionError('err_permission_create');
 		}
 		return parent::execute();
 	}
@@ -66,11 +71,17 @@ final class CreateThread extends MethodForm
 		return Website::error($this->renderTitle(), 'err_permission', [$this->gdoHumanName(), $reason]);
 	}
 
+	/**
+	 * @throws GDO_ArgError
+	 */
 	public function getBoard(): GDO_ForumBoard
 	{
 		return $this->gdoParameterValue('board');
 	}
 
+	/**
+	 * @throws GDO_ArgError
+	 */
 	protected function createForm(GDT_Form $form): void
 	{
 		$board = $this->getBoard();
@@ -125,6 +136,8 @@ final class CreateThread extends MethodForm
 
 	/**
 	 * To test, this method requires to plug a board that allows threads.
+	 *
+	 * @throws GDO_DBException
 	 */
 	public function plugVars(): array
 	{
