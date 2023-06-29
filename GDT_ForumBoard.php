@@ -25,7 +25,8 @@ final class GDT_ForumBoard extends GDT_ObjectSelect
 	### Default root ###
 	####################
 
-	public function defaultLabel(): self { return $this->label('board'); }
+	public function gdtDefaultLabel(): ?string
+    { return 'board'; }
 
 	protected function getChoices(): array
 	{

@@ -22,6 +22,7 @@ final class GDT_ForumSubscribe extends GDT_Enum
 		$this->enumValues(self::NONE, self::OWN, self::ALL);
 	}
 
-	public function defaultLabel(): self { return $this->label('forum_subscription_mode'); }
+	public function gdtDefaultLabel(): ?string
+    { return 'forum_subscription_mode'; }
 
 }

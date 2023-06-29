@@ -21,9 +21,9 @@ final class GDT_ForumThread extends GDT_ObjectSelect
 		$this->table(GDO_ForumThread::table());
 	}
 
-	public function defaultLabel(): self
+	public function gdtDefaultLabel(): ?string
 	{
-		return $this->label('thread');
+		return 'thread';
 	}
 
 	########################

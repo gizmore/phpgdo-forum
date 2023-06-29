@@ -17,7 +17,8 @@ final class GDT_ForumPost extends GDT_Object
 		$this->table(GDO_ForumPost::table());
 	}
 
-	public function defaultLabel(): self { return $this->label('post'); }
+	public function gdtDefaultLabel(): ?string
+    { return 'post'; }
 
 	/**
 	 * @return GDO_ForumPost
