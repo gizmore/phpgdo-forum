@@ -16,7 +16,7 @@ use GDO\User\GDO_User;
 final class PostImage extends Method
 {
 
-	public function isSavingLastUrl(): bool { return false; }
+    public function isSavingLastUrl(): bool { return false; }
 
 	public function getMethodTitle(): string
 	{

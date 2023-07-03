@@ -22,7 +22,7 @@ use GDO\User\GDO_User;
 final class Thread extends MethodQueryCards
 {
 
-	public function isPaginated(): bool { return true; }
+    public function isPaginated(): bool { return true; }
 
 	public function isOrdered(): bool { return false; }
 

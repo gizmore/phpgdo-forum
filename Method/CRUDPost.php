@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace GDO\Forum\Method;
 
 use GDO\Core\GDO;
+use GDO\Core\GDO_Exception;
 use GDO\Core\GDT;
 use GDO\Core\GDT_Hook;
 use GDO\Core\GDT_Response;
@@ -36,7 +37,7 @@ final class CRUDPost extends MethodCrud
 
 	private GDO_ForumThread $thread;
 
-	public function isTrivial(): bool { return false; }
+    public function isTrivial(): bool { return false; }
 
 	public function gdoTable(): GDO { return GDO_ForumPost::table(); }
 
@@ -55,44 +56,54 @@ final class CRUDPost extends MethodCrud
 		Module_Forum::instance()->renderTabs();
 	}
 
-	public function onMethodInit(): ?GDT
+    /**
+     * @throws GDO_Exception
+     */
+    public function beforeMethodInit(): void
 	{
 		# 1. Get thread
 		$user = GDO_User::current();
 		if (
-			($pid = Common::getRequestString('quote')) ||
-			($pid = Common::getRequestString('reply')) ||
-			($pid = Common::getRequestString('id'))
+			(($pid = $this->getInputFor('quote')) ||
+			(($pid = $this->getInputFor('reply'))) ||
+			(($pid = $this->getInputFor('id'))))
 		)
 		{
 			$post = $this->post = GDO_ForumPost::table()->find($pid);
 			$this->thread = $post->getThread();
 			if (!$post->canView($user))
 			{
-				return $this->error('err_permission_read');
+				$this->error('err_permission_read');
 			}
 		}
 		else
 		{
-			return $this->error('err_thread');
+			$this->error('err_thread');
 		}
 		#
 		$_REQUEST['board'] = $this->thread->getBoardID();
-		return null;
 	}
 
-	public function hasPermission(GDO_User $user, string &$error, array &$args): bool
+    public function hasPermission(GDO_User $user, string &$error, array &$args): bool
 	{
+        if (!isset($this->thread))
+        {
+             return false;
+        }
 		# 2. Check permission
-		if (!$this->thread->canView($user))
+		elseif (!$this->thread->canView($user))
 		{
-			return $this->error('err_permission_create');
+			$this->error('err_permission_create');
 		}
-		if ($this->thread->isLocked())
+		elseif ($this->thread->isLocked())
 		{
-			return $this->error('err_thread_locked');
+			$this->error('err_thread_locked');
 		}
-		return true;
+        else
+        {
+            return true;
+        }
+		return false;
 	}
 
 	public function execute(): GDT
@@ -100,8 +111,9 @@ final class CRUDPost extends MethodCrud
 		# 3. Execute
 		$response = parent::execute();
 
-		$card = GDT_CardView::make()->gdo($this->post);
-		return GDT_Response::makeWith($card)->addField($response);
+        return $response;
+//		$card = GDT_CardView::make()->gdo($this->post);$
+//		return GDT_Response::makeWith($card)->addField($response);
 	}
 
 	protected function createForm(GDT_Form $form): void
