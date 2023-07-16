@@ -15,5 +15,5 @@ $pagemenu = GDT_PageMenu::make();
 $query = GDO_ForumPost::table()->select()->where("post_thread={$thread->getID()}")->order('post_created');
 $pagemenu->filterQuery($query);
 $list->query($query);
-$list->title(t('list_title_thread_posts', [$thread->displayTitle(), $thread->getPostCount()]));
+$list->titleRaw(t('list_title_thread_posts', [$thread->displayTitle(), $thread->getPostCount()]));
 echo $list->render();

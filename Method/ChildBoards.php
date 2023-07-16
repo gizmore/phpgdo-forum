@@ -57,4 +57,10 @@ final class ChildBoards extends MethodQueryList
 		$table->hideEmpty();
 	}
 
+    public function getMethodTitle(): string
+    {
+        $board = $this->getBoard();
+        return $board->renderName();
+    }
+
 }

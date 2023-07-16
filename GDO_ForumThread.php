@@ -89,7 +89,7 @@ final class GDO_ForumThread extends GDO
 		return href('Forum', 'Thread', "&title={$title}&post={$post->getID()}#card-{$post->getID()}");
 	}
 
-	public function getTitle() { return $this->gdoVar('thread_title'); }
+	public function getTitle(): string { return $this->gdoVar('thread_title'); }
 
 	public function getLastPost(bool $first = false): GDO_ForumPost
 	{

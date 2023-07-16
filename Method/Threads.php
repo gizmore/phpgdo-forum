@@ -18,15 +18,15 @@ use GDO\Table\MethodQueryList;
 final class Threads extends MethodQueryList
 {
 
-	public function getHeaderName() { return 't'; }
-
 	public function isOrdered(): bool { return false; }
 
 	public function isPaginated(): bool { return true; }
 
 	public function isSearched(): bool { return false; }
 
-	public function getDefaultOrder(): ?string { return 'thread_created'; }
+//    public function getPageName(): string { return 'page'; }
+
+    public function getDefaultOrder(): ?string { return 'thread_created'; }
 
 	public function gdoParameters(): array
 	{
@@ -62,5 +62,14 @@ final class Threads extends MethodQueryList
 		$table->title('forum_board_threads', [
 			$board->renderName(), $table->countItems()]);
 	}
+
+    public function getMethodTitle(): string
+    {
+        $board = $this->getBoard();
+        return t('forum_board_threads2', [
+            html($board->renderName()),
+        ]);
+    }
+
 
 }
