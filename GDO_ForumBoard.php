@@ -32,11 +32,12 @@ use GDO\User\GDT_Permission;
 final class GDO_ForumBoard extends GDO_Tree
 {
 
-	public static bool $BUILD_TREE_UPON_SAVE = true;
+    # set to false for faster board creation during import.
 
-	# set to false for faster board creation during import.
+    public static bool $BUILD_TREE_UPON_SAVE = true;
 
-	public static function getRoot(): self
+
+    public static function getRoot(): self
 	{
 		return Module_Forum::instance()->cfgRoot();
 	}
@@ -72,23 +73,13 @@ final class GDO_ForumBoard extends GDO_Tree
 		return array_merge(
 			[
 				GDT_AutoInc::make('board_id'),
-				GDT_Title::make('board_title')->notNull()
-					->utf8()
-					->caseI()
-					->label('title')
-					->max(64),
-				GDT_String::make('board_description')->utf8()
-					->caseI()
-					->label('description')
-					->icon('message')
-					->max(256),
+				GDT_Title::make('board_title')->notNull()->utf8()->caseI()->label('title')->max(64),
+				GDT_String::make('board_description')->utf8()->caseI()->label('description')->icon('message')->max(256),
 				GDT_Permission::make('board_permission'),
 				GDT_Checkbox::make('board_allow_threads')->initial('0'),
 				GDT_Checkbox::make('board_allow_guests')->initial('0'),
 				GDT_Checkbox::make('board_sticky')->initial('0'),
 				GDT_ForumBoardThreadcount::make('board_user_count_')->gdtType(GDT_UInt::make()), # thread- and postcount via an
-				# ugly hack @see
-				# GDT_ForumBoardThreadcount
 				GDT_ForumPost::make('board_lastpost'),
 				GDT_ImageFile::make('board_image')->scaledVersion('thumb', 48, 48),
 				GDT_Sort::make('board_sort'),

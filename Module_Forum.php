@@ -143,6 +143,7 @@ final class Module_Forum extends GDO_Module
 				[
 					'board_title' => 'GDOv6 Forum',
 					'board_description' => 'Welcome to the GDOv6 Forum Module',
+                    'board_guests' => '1',
 				])->insert();
 			$this->saveConfigVar('forum_root', $root->getID());
 		}
