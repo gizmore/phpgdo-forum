@@ -3,6 +3,7 @@
 
 use GDO\Core\GDT_Hook;
 use GDO\Core\GDT_UInt;
+use GDO\Date\Time;
 use GDO\Forum\Module_Forum;
 use GDO\UI\GDT_Button;
 use GDO\UI\GDT_Card;
@@ -39,7 +40,7 @@ if ($post->isFirstInThread())
 {
 	$title .= $post->getThread()->getTitle();
 }
-$title .= $post->getCreated();
+$title .= Time::displayDate($post->getCreated());
 $card->titleRaw($title);
 
 $attachment = $post->hasAttachment() ? $post->getAttachment() : '';
@@ -67,15 +68,15 @@ $card->editorFooter();
 
 $card->addField(GDT_HTML::make()->var($html));
 
-$cont = GDT_Container::make();
+$cont = GDT_Container::make()->css('float', 'left')->addClass('post_from');
 $user = $post->getCreator();
 $numPosts = Module_Forum::instance()->userSettingVar($user, 'forum_posts');
 $cont->addFields(
 	GDT_ProfileLink::make()->nickname()->avatarUser($user),
-	$user->gdoColumn('user_level'),
-	GDT_UInt::make()->initial($numPosts)->label('num_posts'),
+	$user->gdoColumn('user_level')->iconNone(),
+	GDT_UInt::make()->initial($numPosts)->label('num_posts')->icon('count'),
 );
 GDT_Hook::callHook('DecoratePostUser', $card, $cont, $user);
 $card->image($cont);
 
-echo $card->renderHTML();
+echo $card->render();

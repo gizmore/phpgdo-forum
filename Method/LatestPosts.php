@@ -43,11 +43,12 @@ final class LatestPosts extends MethodQueryList
 		$user = GDO_User::current();
 		return
 			$this->gdoTable()->select()->
-			where("thread_level <= {$user->getLevel()}")->
-			joinObject('thread_board')->
-			join("JOIN gdo_userpermission ON perm_user_id={$user->getID()} AND perm_perm_id=board_permission")->
-			order('thread_lastposted DESC')->
-			limit($this->numLatestThreads());
+                where("thread_level <= {$user->getLevel()}")->
+                joinObject('thread_board')->
+                join("LEFT JOIN gdo_userpermission ON perm_user_id={$user->getID()} AND perm_perm_id=board_permission")->
+                order('thread_lastposted DESC')->
+                where('board_permission IS NULL OR perm_user_id IS NOT NULL')->
+                limit($this->numLatestThreads());
 	}
 
 }

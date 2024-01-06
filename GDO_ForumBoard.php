@@ -157,7 +157,12 @@ final class GDO_ForumBoard extends GDO_Tree
 		return !!$this->gdoVar('board_image');
 	}
 
-	public function hrefView(): string
+    public function hrefNewThread(): string
+    {
+        return href('Forum', 'CreateThread', "&board={$this->getID()}");
+    }
+
+    public function hrefView(): string
 	{
 		return href('Forum', 'Boards', "&id={$this->getID()}");
 	}
@@ -249,7 +254,7 @@ final class GDO_ForumBoard extends GDO_Tree
 
 	public function renderName(): string
 	{
-		return html($this->getTitle());
+		return $this->getTitle();
 	}
 
 
@@ -277,6 +282,5 @@ final class GDO_ForumBoard extends GDO_Tree
 			parent::gdoAfterCreate($gdo);
 		}
 	}
-
 
 }

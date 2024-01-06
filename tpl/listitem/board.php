@@ -57,6 +57,13 @@ $li->actions()->addFields(
 	GDT_Button::make('view')->href($href)->icon('view')->label('btn_view'),
 );
 
+if ($board->allowsThreads())
+{
+    $li->actions()->addFields(
+        GDT_Button::make('new_thread')->href($board->hrefNewThread())->icon('create')->label('btn_create_thread'),
+    );
+}
+
 $module = Module_Forum::instance();
 if ($module->userSettingVar($user, 'forum_subscription') !== GDT_ForumSubscribe::ALL)
 {
