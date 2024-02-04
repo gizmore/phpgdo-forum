@@ -84,10 +84,11 @@ final class CreateThread extends MethodForm
 	 */
 	protected function createForm(GDT_Form $form): void
 	{
-		$board = $this->getBoard();
-		$gdo = GDO_ForumThread::table();
-		$posts = GDO_ForumPost::table();
-		$form->addFields(
+        $module = Module_Forum::instance();
+        $board = $this->getBoard();
+        $gdo = GDO_ForumThread::table();
+        $posts = GDO_ForumPost::table();
+        $form->addFields(
 			$gdo->gdoColumn('thread_board')->noChoices($board)->initial($board ? $board->getID() : null)->writeable(false),
 			$gdo->gdoColumn('thread_level'),
 			$gdo->gdoColumn('thread_title'),
@@ -95,10 +96,15 @@ final class CreateThread extends MethodForm
 			$posts->gdoColumn('post_attachment'),
 			GDT_AntiCSRF::make(),
 		);
-		$form->actions()->addField(GDT_Submit::make());
 
-		$module = Module_Forum::instance();
-		$user = GDO_User::current();
+        if (!$module->cfgUseLevel())
+        {
+            $form->removeFieldNamed('thread_level');
+        }
+
+        $form->actions()->addField(GDT_Submit::make());
+
+        $user = GDO_User::current();
 		if (!$module->canUpload($user))
 		{
 			$form->removeFieldNamed('post_attachment');

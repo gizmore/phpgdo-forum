@@ -129,6 +129,7 @@ final class Module_Forum extends GDO_Module
 			GDT_UInt::make('forum_num_latest')->initial('6'),
 			GDT_Checkbox::make('hook_sidebar')->initial('1'),
 			GDT_UInt::make('forum_threads_per_page')->initial('20'),
+            GDT_Checkbox::make('forum_use_level')->notNull()->initial('0'),
 		];
 	}
 
@@ -153,6 +154,11 @@ final class Module_Forum extends GDO_Module
 	{
 		return $this->getConfigVar('forum_root');
 	}
+
+    public function cfgUseLevel(): bool
+    {
+        return $this->getConfigValue('forum_use_level');
+    }
 
 	public function onWipe(): void
 	{
