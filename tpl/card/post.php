@@ -15,6 +15,7 @@ use GDO\User\GDT_ProfileLink;
 use GDO\Votes\GDT_LikeButton;
 
 $id = $post->getID();
+$mod = Module_Forum::instance();
 
 $user = GDO_User::current();
 $unread = $post->isUnread($user);
@@ -28,9 +29,9 @@ $card = GDT_Card::make("post_$id")->gdo($post)->addClass('forum-post')->addClass
 $actions = $card->actions();
 if ($post->isPersisted())
 {
-	$actions->addField(GDT_EditButton::make()->href($post->hrefEdit())->writeable($post->canEdit($user)));
-	$actions->addField(GDT_Button::make('btn_reply')->icon('reply')->href($post->hrefReply()));
-	$actions->addField(GDT_Button::make('btn_quote')->icon('quote')->href($post->hrefQuote()));
+	$actions->addField(GDT_EditButton::make()->href($post->hrefEdit())->writeable($post->canEdit($user))->noFollow());
+	$actions->addField(GDT_Button::make('btn_reply')->icon('reply')->href($post->hrefReply())->noFollow());
+	$actions->addField(GDT_Button::make('btn_quote')->icon('quote')->href($post->hrefQuote())->noFollow());
 	$actions->addField(GDT_LikeButton::make()->gdo($post));
 }
 
@@ -39,6 +40,7 @@ $title = '';
 if ($post->isFirstInThread())
 {
 	$title .= $post->getThread()->getTitle();
+    $title .= ' ';
 }
 $title .= Time::displayDate($post->getCreated());
 $card->titleRaw($title);
@@ -51,32 +53,35 @@ if ($attachment)
 		GDT_Button::make()->icon('download')->href($post->hrefAttachment())->render();
 	$attachment = <<<EOT
 <hr/>
-<div class="gdo-attachment" layout="row" flex layout-fill layout-align="left center">
+<div class="post-attachment">
   <div>{$downloadButton}</div>
   <div>{$post->gdoColumn('post_attachment')->previewHREF($post->hrefPreview())->renderHTML()}</div>
 </div>
 EOT;
 }
 
+$signature = $post->displaySignature();
+$signature = $signature ? '<div class="post-signature">' . $signature . '</div>' : '';
+
 $html = <<<EOT
+<div class="post-message">
 {$post->displayMessage()}
+</div>
 {$attachment}
-{$post->displaySignature()}
+{$signature}
 EOT;
-
 $card->editorFooter();
-
 $card->addField(GDT_HTML::make()->var($html));
-
-$cont = GDT_Container::make()->css('float', 'left')->addClass('post_from');
+$cont = GDT_Container::make()->addClass('post_from');
 $user = $post->getCreator();
 $numPosts = Module_Forum::instance()->userSettingVar($user, 'forum_posts');
-$cont->addFields(
-	GDT_ProfileLink::make()->nickname()->avatarUser($user),
-	$user->gdoColumn('user_level')->iconNone(),
-	GDT_UInt::make()->initial($numPosts)->label('num_posts')->icon('count'),
-);
+$cont->addField(GDT_ProfileLink::make()->gdo($user)->avatar()->nickname());
+if ($mod->cfgUseLevel())
+{
+    $cont->addField($user->gdoColumn('user_level'));
+}
+$cont->addField(GDT_UInt::make()->initial($numPosts)->label('num_posts'));
 GDT_Hook::callHook('DecoratePostUser', $card, $cont, $user);
 $card->image($cont);
 
-echo $card->render();
+echo $card->renderCard();

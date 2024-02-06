@@ -45,6 +45,7 @@ final class LatestPosts extends MethodQueryList
 			$this->gdoTable()->select()->
                 where("thread_level <= {$user->getLevel()}")->
                 joinObject('thread_board')->
+//                joinObject('thread_creator')->
                 join("LEFT JOIN gdo_userpermission ON perm_user_id={$user->getID()} AND perm_perm_id=board_permission")->
                 order('thread_lastposted DESC')->
                 where('board_permission IS NULL OR perm_user_id IS NOT NULL')->

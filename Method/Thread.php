@@ -85,7 +85,7 @@ final class Thread extends MethodQueryCards
 	{
 		$thread = $this->getThread();
 		Website::setTitle($thread->getTitle());
-		$table->title(t('list_title_thread_posts',
+		$table->titleRaw(t('list_title_thread_posts',
 			[$thread->displayTitle(), $table->countItems()]));
 	}
 

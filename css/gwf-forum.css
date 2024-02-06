@@ -11,3 +11,28 @@
     background: #fee !important;
 }
 
+.gdt-li-upper {
+    display: flex;
+}
+
+.gdt-li-date {
+    margin-left: auto;
+    color: #999;
+}
+
+.post_from {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.post_from label:first-child {
+    display: none;
+}
+
+.post_from span:nth-child(2) {
+    grid-column: 1/-1;
+}
+
+.forum-post .gdt-card-fields {
+    display: block;
+}
