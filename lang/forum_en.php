@@ -57,8 +57,8 @@ return [
 	'signature' => 'Your signature',
 	'forum_subscription_mode' => 'Forum E-Mail Subscription Mode',
 	'tt_forum_subscription_mode' => 'Also check account settings for E-Mail options',
-	'forum_posts' => 'Your total posts',
-	'forum_threads' => 'Your total created threads',
+	'forum_posts' => 'Total posts',
+	'forum_threads' => 'Total created threads',
 	'forum_readmark' => 'ReadMarker to speedup Unread Engine',
 	#######################################################################
 	'enum_fsub_none' => 'Only Manually per thread/board',

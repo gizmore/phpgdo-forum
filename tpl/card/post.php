@@ -16,6 +16,7 @@ use GDO\Votes\GDT_LikeButton;
 
 $id = $post->getID();
 $mod = Module_Forum::instance();
+$thread = $post->getThread();
 
 $user = GDO_User::current();
 $unread = $post->isUnread($user);
@@ -36,14 +37,13 @@ if ($post->isPersisted())
 }
 
 
-$title = '';
+$title = GDT_Container::make()->horizontal();
 if ($post->isFirstInThread())
 {
-	$title .= $post->getThread()->getTitle();
-    $title .= ' ';
+	$title->addField($thread->gdoColumn('thread_title'));
 }
-$title .= Time::displayDate($post->getCreated());
-$card->titleRaw($title);
+$title->addField($thread->gdoColumn('thread_created'));
+$card->title($title);
 
 $attachment = $post->hasAttachment() ? $post->getAttachment() : '';
 if ($attachment)
