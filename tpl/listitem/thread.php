@@ -8,6 +8,7 @@ use GDO\Forum\GDT_ForumSubscribe;
 use GDO\Forum\Module_Forum;
 use GDO\Table\GDT_ListItem;
 use GDO\UI\GDT_Button;
+use GDO\UI\GDT_Headline;
 use GDO\UI\GDT_Link;
 use GDO\User\GDO_User;
 
@@ -34,14 +35,14 @@ $li->date($thread->getLastPosted());
 if ($replycount)
 {
 	$linkLastReply = GDT_Link::anchor($thread->hrefLastPost(), $thread->displayLastPosted());
-	$li->subtitle('li_thread_replies', [
+	$li->subtitle(GDT_Headline::make()->text('li_thread_replies', [
 		$thread->getPostCount() - 1,
 		$lastPoster->renderUserName(),
-		$linkLastReply]);
+		$linkLastReply])->level(5));
 }
 else
 {
-	$li->subtitle('li_thread_no_replies');
+	$li->subtitle(GDT_Headline::make()->text('li_thread_no_replies')->level(5));
 }
 
 # Actions
