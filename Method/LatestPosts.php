@@ -38,7 +38,7 @@ final class LatestPosts extends MethodQueryList
 		$table->title('forum_list_latest_threads');
 	}
 
-	public function getQuery(): Query
+	public function gdoQuery(): Query
 	{
 		$user = GDO_User::current();
 		return

@@ -47,10 +47,10 @@ final class UnreadThreads extends MethodQueryList
 
 	public function getCountQuery(): Query
 	{
-		return $this->getQuery()->selectOnly('COUNT(DISTINCT(thread_id))');
+		return $this->gdoQuery()->selectOnly('COUNT(DISTINCT(thread_id))');
 	}
 
-	public function getQuery(): Query
+	public function gdoQuery(): Query
 	{
 		$user = GDO_User::current();
 		return GDO_ForumUnread::table()->

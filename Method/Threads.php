@@ -40,11 +40,11 @@ final class Threads extends MethodQueryList
 		return GDO_ForumThread::table();
 	}
 
-	public function getQuery(): Query
+	public function gdoQuery(): Query
 	{
 		$board = $this->getBoard();
 		return
-			parent::getQuery()->
+			parent::gdoQuery()->
 			where("thread_board={$board->getID()}");
 	}
 

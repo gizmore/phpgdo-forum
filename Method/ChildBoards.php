@@ -31,7 +31,7 @@ final class ChildBoards extends MethodQueryList
 		];
 	}
 
-	public function getQuery(): Query
+	public function gdoQuery(): Query
 	{
 		$board = $this->getBoard();
 		return

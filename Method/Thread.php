@@ -71,12 +71,12 @@ final class Thread extends MethodQueryCards
 		return GDO_ForumPost::table();
 	}
 
-	public function getQuery(): Query
+	public function gdoQuery(): Query
 	{
 		$thread = $this->getThread();
 		$uid = GDO_User::current()->getID();
 		return
-			parent::getQuery()->
+			parent::gdoQuery()->
 			join("LEFT JOIN gdo_forumpostlikes ON like_user={$uid} AND like_object=post_id")->
 			where("post_thread={$thread->getID()}");
 	}
